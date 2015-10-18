@@ -63,6 +63,10 @@ namespace PhotoContest.Data
         {
             return this.context.SaveChanges();
         }
+        public Task<int> SaveChangesAsync()
+        {
+            return this.context.SaveChangesAsync();
+        }
 
         public void Dispose()
         {

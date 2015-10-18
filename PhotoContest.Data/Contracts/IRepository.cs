@@ -21,5 +21,7 @@ namespace PhotoContest.Data.Contracts
         void Delete(object id);
 
         int SaveChanges();
+
+        Task<int> SaveChangesAsync();
     }
 }

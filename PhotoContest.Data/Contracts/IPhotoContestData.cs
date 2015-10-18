@@ -28,5 +28,7 @@ namespace PhotoContest.Data.Contracts
         IRepository<Message> Messages { get; }
 
         int SaveChanges();
+
+        Task<int> SaveChangesAsync();
     }
 }

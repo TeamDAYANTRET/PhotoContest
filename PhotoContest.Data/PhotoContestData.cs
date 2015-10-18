@@ -76,6 +76,11 @@ namespace PhotoContest.Data
             return this.context.SaveChanges();
         }
 
+        public Task<int> SaveChangesAsync()
+        {
+            return this.context.SaveChangesAsync();
+        }
+
         private IRepository<T> GetRepository<T>() where T : class
         {
             if (!this.repositories.ContainsKey(typeof(T)))
