@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PhotoContest.Models.Enumerations;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhotoContest.Models
 {
@@ -18,6 +15,8 @@ namespace PhotoContest.Models
         public DateTime SendOn { get; set; }
 
         public NotificationType Type { get; set; }
+
+        public bool IsRead { get; set; } 
 
         [Required]
         public string UserId { get; set; }

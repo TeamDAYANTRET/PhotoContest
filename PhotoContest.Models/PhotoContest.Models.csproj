@@ -53,13 +53,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationUser.cs" />
+    <Compile Include="Category.cs" />
+    <Compile Include="Comment.cs" />
     <Compile Include="Contest.cs" />
+    <Compile Include="Enumerations\DeadlineStrategy.cs" />
+    <Compile Include="Enumerations\NotificationType.cs" />
+    <Compile Include="Enumerations\RewardStrategy.cs" />
+    <Compile Include="Enumerations\Strategy.cs" />
+    <Compile Include="Enumerations\TypeOfEnding.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="Notification.cs" />
-    <Compile Include="NotificationType.cs" />
     <Compile Include="Prize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategy.cs" />
+    <Compile Include="Tag.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

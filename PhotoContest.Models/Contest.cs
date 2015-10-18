@@ -1,9 +1,7 @@
-﻿using System;
+﻿using PhotoContest.Models.Enumerations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhotoContest.Models
 {
@@ -12,12 +10,14 @@ namespace PhotoContest.Models
         private ICollection<Image> pictures;
         private ICollection<ApplicationUser> committeeMembers;
         private ICollection<ApplicationUser> participants;
+        private ICollection<Prize> prizes;
 
         public Contest()
         {
             this.pictures = new HashSet<Image>();
             this.committeeMembers = new HashSet<ApplicationUser>();
             this.participants = new HashSet<ApplicationUser>();
+            this.prizes = new HashSet<Prize>();
         }
 
         [Key]
@@ -35,7 +35,15 @@ namespace PhotoContest.Models
 
         public Strategy ParticipationStrategy { get; set; }
 
+        public RewardStrategy RewardStrategy { get; set; }
+
+        public DeadlineStrategy DeadlineStrategy { get; set; }
+
+        public TypeOfEnding Ended { get; set; }
+
         public DateTime CreatedOn { get; set; }
+
+        public DateTime LastUpdated { get; set; }
 
         public DateTime? EndTime { get; set; }
 
@@ -46,10 +54,16 @@ namespace PhotoContest.Models
 
         public virtual ApplicationUser Owner { get; set; }
 
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
+
         public virtual ICollection<Image> Pictures { get { return this.pictures; } set { this.pictures = value; } }
 
         public virtual ICollection<ApplicationUser> Participants { get { return this.participants; } set { this.participants = value; } }
 
         public virtual ICollection<ApplicationUser> CommitteeMembers { get { return this.committeeMembers; } set { this.committeeMembers = value; } }
+
+        public virtual ICollection<Prize> Prizes { get { return this.prizes; } set { this.prizes = value; } }
     }
 }

@@ -15,6 +15,7 @@ namespace PhotoContest.Models
         [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
         public int ForPlace { get; set; }
@@ -26,5 +27,9 @@ namespace PhotoContest.Models
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
+
+        public int PictureId { get; set; }
+
+        public virtual Image Picture { get; set; }
     }
 }
