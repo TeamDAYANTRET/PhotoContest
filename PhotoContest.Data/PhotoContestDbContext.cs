@@ -111,7 +111,7 @@ namespace PhotoContest.Data
 
             modelBuilder.Entity<Image>()
                 .HasOptional(i => i.Prize)
-                .WithRequired(p => p.Picture);
+                .WithOptionalPrincipal(p => p.Picture);
 
             modelBuilder.Entity<Contest>()
                 .HasMany(c => c.Prizes)

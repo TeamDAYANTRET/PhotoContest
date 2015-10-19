@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoContest.Models", "PhotoContest.Models\PhotoContest.Models.csproj", "{133C0308-568D-4218-9313-F90234A3ADAE}"
 EndProject
@@ -9,7 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoContest.Data", "PhotoC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoContest.Web", "PhotoContest.Web\PhotoContest.Web.csproj", "{4E78D361-D8A0-4ACD-BBC1-01F0F6809830}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExternalLibraries", "ExternalLibraries\ExternalLibraries.shproj", "{E86255CA-391A-46B9-8CEC-3F1284952ED4}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ExternalLibraries\SharedProject1.projitems*{e86255ca-391a-46b9-8cec-3f1284952ed4}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

@@ -28,7 +28,7 @@ namespace PhotoContest.Models
 
         public virtual ApplicationUser User { get; set; }
 
-        public int PictureId { get; set; }
+        public int? PictureId { get; set; }
 
         public virtual Image Picture { get; set; }
     }
