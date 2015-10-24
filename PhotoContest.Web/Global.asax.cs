@@ -1,5 +1,9 @@
-﻿using System;
+﻿using PhotoContest.Data;
+using PhotoContest.Data.Migrations;
+using PhotoContest.Web.App_Start;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +16,10 @@ namespace PhotoContest.Web
     {
         protected void Application_Start()
         {
+            Database.SetInitializer(
+                new MigrateDatabaseToLatestVersion<PhotoContestDbContext, Configuration>());
+
+            MapperConfig.RegisterMappings();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
