@@ -172,7 +172,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.ParticipationStrategy = Strategy.Open;
                             newContest.RewardStrategy = RewardStrategy.TopNPrizes;
                             newContest.DeadlineStrategy = DeadlineStrategy.ByTime;
-                            newContest.EndTime = DateTime.Now.AddDays(31);
+                            newContest.ParticipationEndTime = DateTime.Now.AddDays(31);
                             newContest.Participants = allUsers.GetRange(3, 14);
                             newContest.MaxParticipationsCount = 125;
                             newContest.PossibleWinnersCount = 3;
@@ -185,7 +185,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.ParticipationStrategy = Strategy.Closed;
                             newContest.RewardStrategy = RewardStrategy.SingleWinner;
                             newContest.DeadlineStrategy = DeadlineStrategy.ByTime;
-                            newContest.EndTime = DateTime.Now.AddDays(10);
+                            newContest.ParticipationEndTime = DateTime.Now.AddDays(10);
                             newContest.Participants = allUsers.GetRange(3, 10);
                             newContest.CommitteeMembers = allUsers.GetRange(16, 3);
                         }
@@ -240,7 +240,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.ParticipationStrategy = Strategy.Open;
                             newContest.RewardStrategy = RewardStrategy.SingleWinner;
                             newContest.DeadlineStrategy = DeadlineStrategy.ByTime;
-                            newContest.EndTime = DateTime.Now.AddDays(20);
+                            newContest.ParticipationEndTime = DateTime.Now.AddDays(20);
                             newContest.Participants = allUsers.GetRange(allUsers.Count() - 3, 2);
                         }
                         break;

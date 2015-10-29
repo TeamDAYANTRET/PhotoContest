@@ -1,0 +1,44 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@using PhotoContest.Models.Enumerations
+@using Microsoft.AspNet.Identity
+@model ContestBasicInfoViewModel
+
+<tbody>
+    <tr class="@(Model.State != TypeOfEnding.Ongoing ? "danger"
+    : ((Model.ParticipationsCount < Model.MaxParticipationsCount || Model.ParticipationEndTime > DateTime.Now)) 
+    ? "success" 
+    : "warning")">
+        <td>
+            @Html.ActionLink(Model.Title, "details", "Contest", new { id = Model.Id }, htmlAttributes: null)
+        </td>
+        <td>
+            @Model.ParticipationsCount (@(String.IsNullOrEmpty(Model.MaxParticipationsCount.ToString()) ? "No Limit" : Model.MaxParticipationsCount.ToString()))
+        </td>
+        <td>
+            @if (Model.State == TypeOfEnding.Ongoing)
+            {
+                @(Model.ParticipationEndTime == default(DateTime) ? "No Limit" : (Model.ParticipationEndTime > DateTime.Now ? (Model.ParticipationEndTime - DateTime.Now).ToString(@"dd\.hh\:mm\:ss") : "0:00:00:00") + " (" + @Model.ParticipationEndTime + ")")
+            }
+            else
+            {
+               @Model.EndTime
+            }
+        </td>
+        <td>
+            @Model.ParticipationStrategy
+        </td>
+        <td>
+            @Model.VotingStrategy
+        </td>
+        <td>
+            @if (Model.OwnerId == User.Identity.GetUserId() && Model.State == TypeOfEnding.Ongoing)
+            {
+                @Html.ActionLink("Options", "Edit", "Contest", new { id = Model.Id }, htmlAttributes: null)
+            }
+            else
+            {
+                @:-
+            }
+        </td>
+    </tr>
+</tbody>

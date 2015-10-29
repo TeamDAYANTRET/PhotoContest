@@ -14,9 +14,15 @@ namespace PhotoContest.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "RemoveMember",
+                url: "{controller}/{id}/{action}/{userId}",
+                defaults: new { controller = "Contest", action = "Index"}
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Contest", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

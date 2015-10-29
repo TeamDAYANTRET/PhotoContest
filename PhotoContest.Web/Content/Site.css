@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.contest-img {
+    max-height: 200px;
+    height: 200px;
+    margin: 0 auto;
+}

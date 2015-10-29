@@ -12,11 +12,6 @@ namespace PhotoContest.Web.Controllers
     {
         protected IPhotoContestData Data { get; private set; }
 
-        public BaseController()
-            : this(new PhotoContestData())
-        {
-        }
-
         public BaseController(IPhotoContestData data)
         {
             this.Data = data;

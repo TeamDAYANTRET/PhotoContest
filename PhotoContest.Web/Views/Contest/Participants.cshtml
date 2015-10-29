@@ -1,0 +1,34 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@model ContestMembersViewModel
+@{
+    ViewBag.Title = "Members";
+}
+
+<h2>Participants in @Model.Title</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                User
+            </th>
+            <th>
+                Remove
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>
+                    @user.Username
+                </td>
+                <td>
+                    @Html.ActionLink("Remove", "RemoveParticipant", "Contest", new { id = Model.Id, userId = user.Id }, null)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

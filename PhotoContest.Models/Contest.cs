@@ -39,13 +39,15 @@ namespace PhotoContest.Models
 
         public DeadlineStrategy DeadlineStrategy { get; set; }
 
-        public TypeOfEnding Ended { get; set; }
+        public TypeOfEnding State { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
         public DateTime LastUpdated { get; set; }
 
-        public DateTime? EndTime { get; set; }
+        public DateTime? ParticipationEndTime { get; set; }
+
+        public DateTime? ContestEndTime { get; set; }
 
         public int? MaxParticipationsCount { get; set; }
 

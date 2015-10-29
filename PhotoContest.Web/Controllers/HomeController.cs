@@ -11,13 +11,14 @@ namespace PhotoContest.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController() : base()
+        public HomeController() : this(new PhotoContestData())
         {
         }
 
         public HomeController(IPhotoContestData ctx) : base(ctx)
         {
         }
+
         public ActionResult Index()
         {
             var start = this.Data.Comments.All().Count();
