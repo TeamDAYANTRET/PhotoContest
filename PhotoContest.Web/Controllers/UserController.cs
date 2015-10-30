@@ -51,5 +51,19 @@ namespace PhotoContest.Web.Controllers
 
             return View("Contests", contests);
         }
+
+        [AllowAnonymous]
+        public JsonResult isEmailExist(string email)
+        {
+            var user = this.Data.Users.All().FirstOrDefault(u => u.Email == email);
+            return Json(user == null);
+        }
+
+        [AllowAnonymous]
+        public JsonResult isUsernameExist(string username)
+        {
+            var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
+            return Json(user == null);
+        }
     }
 }

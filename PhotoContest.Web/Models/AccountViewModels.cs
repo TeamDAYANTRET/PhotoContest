@@ -49,9 +49,8 @@ namespace PhotoContest.Web.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -65,8 +64,14 @@ namespace PhotoContest.Web.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Username")]
+        [System.Web.Mvc.Remote("isUsernameExist", "User", HttpMethod = "POST", ErrorMessage = "This username is already taken")]
+        public string Username { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
+        [System.Web.Mvc.Remote("isEmailExist", "User", HttpMethod = "POST", ErrorMessage = "The email is already taken")]
         public string Email { get; set; }
 
         [Required]
