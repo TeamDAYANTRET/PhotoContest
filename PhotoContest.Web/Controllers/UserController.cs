@@ -65,5 +65,12 @@ namespace PhotoContest.Web.Controllers
             var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
             return Json(user == null);
         }
+
+        public JsonResult getUsers(string username)
+        {
+            var users = this.Data.Users.All().Where(t => t.UserName.Contains(username)).Select(t => t.UserName).ToList();
+
+            return Json(users, JsonRequestBehavior.AllowGet);
+        }
     }
 }

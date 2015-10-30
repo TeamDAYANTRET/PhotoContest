@@ -56,7 +56,7 @@ namespace PhotoContest.Models
 
         public virtual ApplicationUser Owner { get; set; }
 
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         public Category Category { get; set; }
 

@@ -55,10 +55,11 @@ namespace PhotoContest.Web
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
-
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            
+            app.UseFacebookAuthentication(
+                appId: "721346014663974",
+                appSecret: "ec17ec8d4f8048fc230a61125c4e2aab"
+            );
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

@@ -267,23 +267,43 @@ namespace PhotoContest.Web.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> AddParticipant(int contestId, string userId)
+        public async Task<ActionResult> AddParticipant(int id, string username)
         {
             var ownerId = User.Identity.GetUserId();
-            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == contestId && c.OwnerId == ownerId);
+            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == ownerId);
             if (contest == null)
             {
                 // error message n redirect
             }
 
-            var participant = await this.Data.Users.All().FirstOrDefaultAsync(u=>u.Id==userId);
+            var participant = await this.Data.Users.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (participant == null)
             {
 
             }
             contest.Participants.Add(participant);
             await this.Data.SaveChangesAsync();
-            return RedirectToAction("index", "Contest");
+            return RedirectToAction("GetParticipants", "Contest", new { id = id });
+        }
+
+        [Authorize]
+        public async Task<ActionResult> AddCommitee(int id, string username)
+        {
+            var ownerId = User.Identity.GetUserId();
+            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == ownerId);
+            if (contest == null)
+            {
+                // error message n redirect
+            }
+
+            var participant = await this.Data.Users.All().FirstOrDefaultAsync(u => u.UserName == username);
+            if (participant == null)
+            {
+
+            }
+            contest.CommitteeMembers.Add(participant);
+            await this.Data.SaveChangesAsync();
+            return RedirectToAction("GetParticipants", "Contest", new { id = id });
         }
 
         private IQueryable<ContestBasicInfoViewModel> getContestsBasicInfo(Expression<Func<Contest, bool>> wherePredicate)
