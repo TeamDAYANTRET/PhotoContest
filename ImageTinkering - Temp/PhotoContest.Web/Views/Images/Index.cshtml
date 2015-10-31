@@ -1,0 +1,87 @@
+﻿@using PhotoContest.Web.Models.BindingModels
+
+@model UploadImageBindingModel
+
+@{
+    ViewBag.Title = "Image Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (@Html.BeginForm("UploadImage", "Images", FormMethod.Post, new { id = "upload-image-form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken();
+    <h4>Fill in image data:</h4>
+    if (TempData["successUpload"] != null)
+    {
+        <p class="text-success">@TempData["successUpload"]</p>
+    }
+    if (TempData["contestClosed"] != null)
+    {
+        <p class="text-warning">@TempData["contestClosed"]</p>
+    }
+    <div class="input-group">
+        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+        <div class="input-group-addon" id="basic-addon">Title</div>
+        @Html.TextBoxFor(m => m.Title, null, new { @class = "form-control" })
+    </div>
+        <br />
+        <div class="input-group">
+            @Html.ValidationMessageFor(m => m.PhotoFile, null, new { @class = "text-danger" })
+            <div class="input-group-addon" id="basic-addon1">Upload photo</div>
+            @Html.TextBoxFor(m => m.PhotoFile, null, new { type = "file", @class = "form-control", id = "uploadPhoto", value = "Upload" })
+        </div>
+            <br />
+            <div class="input-group">
+                <div class="input-group-addon" id="basic-addon2">Description</div>
+                @Html.TextBoxFor(m => m.Description, null, new { @class = "form-control" })
+            </div>
+            <br />
+            <div class="input-group">
+                <div class="input-group-addon" id="basic-addon3">Contest Id</div>
+                @Html.TextBoxFor(m => m.ContestId, null, new { @class = "form-control" })
+            </div>
+            <br />
+            <input type="submit" class="btn btn-primary" value="Upload" />
+            <div>
+                <br />
+                <h5>Preview:</h5>
+                <img src="http://www.rentals-london.co.uk/assets/images/new-developments/awaiting_image.png" id="uploadPhotoPreview" />
+            </div>
+}
+
+<br/><br/>
+<h4>Delete pic by id:</h4>
+@using(Ajax.BeginForm("Delete",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "deleteResponse",
+        InsertionMode = InsertionMode.Replace
+    }))
+{
+    @Html.AntiForgeryToken()
+    <p id="deleteResponse"></p>
+    @Html.TextBox("id", null, new { @class = "form-control" })
+    <input type="submit" class="btn btn-primary" value="Delete" />
+}
+
+@section scripts{
+    <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#uploadPhotoPreview').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#uploadPhoto").change(function () {
+                readURL(this);
+            });
+    </script>
+}
+

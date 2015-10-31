@@ -1,0 +1,18 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@model ContestModel
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Add</h2>
+
+@using (Html.BeginForm("post", "Contest", null, FormMethod.Post, htmlAttributes: null))
+{
+    @Html.EditorForModel()
+    <input class="btn btn-success" type="submit" value="Add" />
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

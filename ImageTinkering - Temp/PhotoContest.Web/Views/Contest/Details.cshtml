@@ -1,0 +1,38 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@model ContestDetailsViewModel
+@{
+    ViewBag.Title = "Contest" + Model.Title;
+}
+
+<h2>Contest @Model.Title</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        Participations (All Spots): @Model.ParticipationsCount (@(String.IsNullOrEmpty(Model.MaxParticipationsCount.ToString()) ? "No Limit" : Model.MaxParticipationsCount.ToString()))
+    </div>
+    <div class="col-md-3">
+        Time Left (End Time): @(Model.ParticipationEndTime == default(DateTime) ? "No Limit" : (Model.ParticipationEndTime > DateTime.Now ? (Model.ParticipationEndTime - DateTime.Now).ToString(@"dd\.hh\:mm\:ss") : "0:00:00:00") + " (" + @Model.ParticipationEndTime + ")")
+    </div>
+    <div class="col-md-3">
+        Participation: @Model.ParticipationStrategy
+        @if (Model.CanParticipate && User.Identity.IsAuthenticated)
+        {
+            using (Html.BeginForm("upload", "Image", new { id = Model.Id }, FormMethod.Post, htmlAttributes: null))
+            {
+                <input type="file" name="file" />
+                <input class="btn btn-success" type="submit" value="Upload"/>
+            }
+        }
+    </div>
+    <div class="col-md-3">
+        Voting: @Model.VotingStrategy
+        @if (Model.CanVote && User.Identity.IsAuthenticated)
+        {
+            <p>You can vote for one image</p>
+        }
+    </div>
+</div>
+<div class="row">
+    @Html.DisplayFor(i => i.Picuters)
+</div> 
+
