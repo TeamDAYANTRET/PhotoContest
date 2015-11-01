@@ -370,7 +370,7 @@ namespace PhotoContest.Web.Controllers
                 }
                 //ClaimsIdentity ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
                 //var username = ext.Claims.First(x => x.Type.Contains("name")).Value;
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = info.DefaultUserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

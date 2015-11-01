@@ -4,6 +4,8 @@
     ViewBag.Title = "Commitee";
 }
 
+@Html.Partial("_FlashMessages")
+
 <h2>Commitee in @Model.Title</h2>
 @using (Html.BeginForm("AddCommitee", "Contest", new { id = Model.Id }, FormMethod.Post))
 {

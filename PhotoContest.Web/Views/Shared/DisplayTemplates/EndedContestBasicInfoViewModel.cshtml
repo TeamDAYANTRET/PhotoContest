@@ -1,0 +1,24 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@using PhotoContest.Models.Enumerations
+@using Microsoft.AspNet.Identity
+@model EndedContestBasicInfoViewModel
+
+<tbody>
+    <tr class="danger">
+        <td>
+            @Html.ActionLink(Model.Title, "details", "Contest", new { id = Model.Id }, htmlAttributes: null)
+        </td>
+        <td>
+            @Model.ParticipationsCount (@(String.IsNullOrEmpty(Model.MaxParticipationsCount.ToString()) ? "No Limit" : Model.MaxParticipationsCount.ToString()))
+        </td>
+        <td>
+            @Model.EndTime
+        </td>
+        <td>
+            @Model.ParticipationStrategy
+        </td>
+        <td>
+            @Model.VotingStrategy
+        </td>
+    </tr>
+</tbody>

@@ -1,13 +1,10 @@
 ﻿@using PhotoContest.Web.Models.ViewModels
 @using PhotoContest.Models.Enumerations
 @using Microsoft.AspNet.Identity
-@model ContestBasicInfoViewModel
+@model OngoingContestBasicInfoViewModel
 
 <tbody>
-    <tr class="@(Model.State != TypeOfEnding.Ongoing ? "danger"
-    : ((Model.ParticipationsCount < Model.MaxParticipationsCount || Model.ParticipationEndTime > DateTime.Now)) 
-    ? "success" 
-    : "warning")">
+    <tr class="@(((Model.ParticipationsCount < Model.MaxParticipationsCount || Model.ParticipationEndTime > DateTime.Now)) ? "success" : "warning")">
         <td>
             @Html.ActionLink(Model.Title, "details", "Contest", new { id = Model.Id }, htmlAttributes: null)
         </td>
@@ -15,14 +12,7 @@
             @Model.ParticipationsCount (@(String.IsNullOrEmpty(Model.MaxParticipationsCount.ToString()) ? "No Limit" : Model.MaxParticipationsCount.ToString()))
         </td>
         <td>
-            @if (Model.State == TypeOfEnding.Ongoing)
-            {
-                @(Model.ParticipationEndTime == default(DateTime) ? "No Limit" : (Model.ParticipationEndTime > DateTime.Now ? (Model.ParticipationEndTime - DateTime.Now).ToString(@"dd\.hh\:mm\:ss") : "0:00:00:00") + " (" + @Model.ParticipationEndTime + ")")
-            }
-            else
-            {
-               @Model.EndTime
-            }
+            @(Model.ParticipationEndTime == default(DateTime) ? "No Limit" : (Model.ParticipationEndTime > DateTime.Now ? (Model.ParticipationEndTime - DateTime.Now).ToString(@"dd\.hh\:mm\:ss") : "0:00:00:00") + " (" + @Model.ParticipationEndTime + ")")
         </td>
         <td>
             @Model.ParticipationStrategy
@@ -31,7 +21,7 @@
             @Model.VotingStrategy
         </td>
         <td>
-            @if (Model.OwnerId == User.Identity.GetUserId() && Model.State == TypeOfEnding.Ongoing)
+            @if (Model.OwnerId == User.Identity.GetUserId())
             {
                 @Html.ActionLink("Options", "Edit", "Contest", new { id = Model.Id }, htmlAttributes: null)
             }

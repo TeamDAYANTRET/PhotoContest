@@ -34,14 +34,12 @@ namespace PhotoContest.Web.Controllers
             var userId = User.Identity.GetUserId();
             var currentContests = await this.Data.Contests.All()
                 .Where(c => c.OwnerId == userId && c.State == TypeOfEnding.Ongoing)
-                .OrderByDescending(c => c.ContestEndTime)
-                .ThenByDescending(c => c.ParticipationEndTime)
-                .Select(ContestBasicInfoViewModel.Create).ToListAsync();
+                .OrderByDescending(c => c.ParticipationEndTime)
+                .Select(OngoingContestBasicInfoViewModel.Create).ToListAsync();
             var pastContests = await this.Data.Contests.All()
                 .Where(c => c.OwnerId == userId && c.State != TypeOfEnding.Ongoing)
                 .OrderByDescending(c => c.ContestEndTime)
-                .ThenByDescending(c => c.ParticipationEndTime)
-                .Select(ContestBasicInfoViewModel.Create).ToListAsync();
+                .Select(EndedContestBasicInfoViewModel.Create).ToListAsync();
 
             var contests = new IndexPageViewModel()
             {
@@ -49,6 +47,7 @@ namespace PhotoContest.Web.Controllers
                 OngoingContests = currentContests
             };
 
+            ViewBag.msg = TempData["msg"];
             return View("Contests", contests);
         }
 
