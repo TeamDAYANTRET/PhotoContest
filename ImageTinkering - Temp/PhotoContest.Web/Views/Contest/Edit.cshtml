@@ -1,0 +1,28 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@model ContestModel
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Edit</h2>
+@if (Model.ParticipationStrategy == PhotoContest.Models.Enumerations.Strategy.Closed)
+{
+    @Html.ActionLink("Particiapnts", "GetParticipants", "Contest", new { id = Model.Id }, new { @class = "btn btn-info" })
+}
+@if (Model.VotingStrategy == PhotoContest.Models.Enumerations.Strategy.Closed)
+{
+    @Html.ActionLink("Commitee", "GetComiteeMembers", "Contest", new { id = Model.Id }, new { @class = "btn btn-info" })
+}
+@Html.ActionLink("Dismiss", "Dismiss", "Contest", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-danger" })
+@Html.ActionLink("Finalize", "Finalize", "Contest", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-success" })
+
+@using (Html.BeginForm("put", "Contest", new { id = Model.Id }, FormMethod.Post, htmlAttributes: null))
+{
+    @Html.EditorForModel()
+    <input class="btn btn-success" type="submit" value="Edit" />
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

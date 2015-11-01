@@ -1,3 +1,6 @@
+using PhotoContest.Data;
+using PhotoContest.Data.Contracts;
+
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(PhotoContest.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(PhotoContest.Web.App_Start.NinjectWebCommon), "Stop")]
 
@@ -61,6 +64,7 @@ namespace PhotoContest.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IPhotoContestData>().To<PhotoContestData>();
         }        
     }
 }

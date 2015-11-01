@@ -3,5 +3,16 @@
 
 <div class="col-md-3 thumbnail text-center">
     <a class="img-thumbnail" href="@Url.Action("details", "Image", new { id = Model.Id })"><img class="contest-img" src="@Model.Path" /></a>
-    <h4>@Model.VotesCount @Html.ActionLink("UP", "vote", "Vote", new { id = Model.Id }, null)</h4>
+    <h4>@using (Ajax.BeginForm("AddVote", "Vote", new { id = Model.Id }, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = string.Format("count-{0}",Model.Id),
+    }))
+    {
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="submit" value="+" class="btn-primary"/>
+    }
+        <b id="count-@Model.Id">@Model.VotesCount</b>
+    @Html.ActionLink(" ", "AddVote", "Vote", new { id = Model.Id },new { @class="glyphicon glyphicon-plus-sign"})</h4>
 </div>

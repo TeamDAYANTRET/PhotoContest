@@ -1,0 +1,28 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@model ICollection<ContestBasicInfoViewModel>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Participations (All Spots)
+            </th>
+            <th>
+                Time Left (End Time)
+            </th>
+            <th>
+                Participation
+            </th>
+            <th>
+                Voting
+            </th>
+            <th>
+                Tools
+            </th>
+        </tr>
+    </thead>
+    @Html.DisplayForModel()
+</table>
