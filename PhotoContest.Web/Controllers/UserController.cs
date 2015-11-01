@@ -71,5 +71,14 @@ namespace PhotoContest.Web.Controllers
 
             return Json(users, JsonRequestBehavior.AllowGet);
         }
+        [Authorize]
+        public ActionResult GetAllVotesImagesByUser()
+        {
+            var userId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.GetById(userId);
+            var votedImages = currentUser.VotedPictures.AsQueryable();
+            var viewVotedImages= votedImages.Select(VotedImagesViewModel.Create);
+            return View(viewVotedImages);
+        }
     }
 }

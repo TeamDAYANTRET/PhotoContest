@@ -28,6 +28,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("User's Contests", "GetUserContests", "User")</li>
+                        <li>@Html.ActionLink("Voted Photos","GetAllVotesImagesByUser","User")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
