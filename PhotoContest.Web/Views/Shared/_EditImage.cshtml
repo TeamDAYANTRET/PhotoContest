@@ -1,0 +1,40 @@
+﻿@using PhotoContest.Web.Models.BindingModels
+
+@model EditImageBindingModel
+
+@using (Ajax.BeginForm("EditImage", "Images", Model, new AjaxOptions()
+{
+    HttpMethod = "POST",
+    OnSuccess = "exit",
+    OnFailure = "fail",
+    UpdateTargetId = "text-success",
+    InsertionMode = InsertionMode.Replace
+}, new { id = "edit-image-form" }))
+{
+    @Html.AntiForgeryToken();        
+
+        <h4>Edit image data:</h4>
+        <p id="text-success"class = "text-success">@TempData["successUpload"]</p>   
+        <p id="text-fail" class="text-danger"></p>  
+        <div class="input-group">
+            @Html.LabelFor(m => m.Title):<br />
+            <input type="text" name="Title" value="" class="form-control" style="width:auto"/>
+        </div>
+        <br />
+        <div class="input-group">
+            @Html.LabelFor(m => m.Description):<br />
+            <textarea class="form-control" name="Description" rows="2" style="width:auto;"></textarea>
+        </div>
+        <input type="submit" class="btn btn-success ok-btn"value="OK"> 
+}
+<input type="submit" class="btn btn-primary cencel" id="exit@(Model.Id)" data-dismiss="modal" value="Cencel"/>
+
+<script>
+    function exit() {
+        setTimeout(function () { $('#exit@(Model.Id)').click(); }, 3000);
+    }
+
+    function fail() {
+        $('#text-fail').html("Wrong input.");
+    }
+</script>

@@ -1,7 +1,0 @@
-﻿@using PhotoContest.Web.Models.ViewModels
-@model ImageViewModel
-
-<div class="col-md-3 thumbnail text-center">
-    <a class="img-thumbnail" href="@Url.Action("details", "Image", new { id = Model.Id })"><img class="contest-img" src="@Model.Path" /></a>
-    <h4>@Model.VotesCount @Html.ActionLink("UP", "vote", "Vote", new { id = Model.Id }, null)</h4>
-</div>

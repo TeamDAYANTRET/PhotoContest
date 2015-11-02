@@ -1,0 +1,20 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@model OwnImageViewModel
+
+<tr>
+    <td>
+        <img class="img-thumbnail" style="width:150px;height:150px" src="@Model.ImgPath" />
+    </td>
+    <td><strong>@Model.Votes</strong></td>
+    <td>@Model.ContestName</td>
+    <td>@Model.State</td>
+    @if (Model.EndTime == null)
+    {
+        <td>No Limit</td>
+    }
+    else
+    {
+        <td>@Model.EndTime</td>
+    }
+</tr>
+

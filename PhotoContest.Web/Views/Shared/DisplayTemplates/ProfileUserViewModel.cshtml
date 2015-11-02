@@ -1,0 +1,58 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@model ProfileUserViewModel
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 lead">User profile<hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <img class="img-circle avatar avatar-original" style="-webkit-user-select: none; width: 200px; height: 200px;
+                                      display: block; margin: auto;" src="@Model.ProfilePath">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h1 class="only-bottom-margin">@Model.UserName</h1>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="text-muted">Email:</span> @Model.Email<br>
+                                    @if (@Model.FullName != null)
+                                    {
+                                        <span class="text-muted">Name: </span>
+                                        @Model.FullName<br>
+                                    }
+                                    @if (@Model.Joined != null)
+                                    {
+                                        <span class="text-muted">Created: </span>
+                                        @Model.Joined<br/>
+                                    }
+                                    @if (@Model.PhoneNumber != null)
+                                    {
+                                        <span class="text-muted">Phone Number: </span>
+                                        @Model.PhoneNumber <br/>
+                                    }
+                                    <span class="text-muted">About me: </span> @Model.AboutMe 
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="activity-mini">
+                                        <i class="glyphicon glyphicon-picture"></i> @Model.OwnedImagesCount
+                                    </div>
+                                    <div class="activity-mini">
+                                        <i class="glyphicon glyphicon-gift"></i> @Model.OwnedImagesCount
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

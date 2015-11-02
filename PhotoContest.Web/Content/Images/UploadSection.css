@@ -1,0 +1,53 @@
+﻿aside{
+    float:left; 
+    display:inline-block; 
+    margin-right:20px;
+    width:20%;
+    position:absolute;
+    top:100px;
+    left:20px;
+}
+
+#upload-form-container{
+    display:none;
+}
+
+#uploadPhotoPreview{
+    max-width:280px;
+}
+
+.modal-content{
+    display:inline-block;
+    padding:10px;
+}
+
+.modal-body{
+    display:inline-block;
+    border:1px solid lightgray;
+    border-radius:10px;
+}
+
+.img-display-only{
+    position:relative;
+}
+
+.btn-exit{
+    position:absolute;
+    float:right;
+    right:15px;
+    top:15px;
+    font-size:20px;
+    padding:5px;
+    background:white;
+    width:35px;
+    height:35px;
+    border:1px solid lightgray;
+    opacity:0.2;
+}
+
+.btn-exit:hover{
+    opacity:0.7;
+}
+
+
+
