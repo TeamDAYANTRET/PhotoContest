@@ -1,0 +1,34 @@
+﻿@model  List<PhotoContest.Web.Models.ViewModels.OwnImageViewModel>
+
+@{
+    ViewBag.Title = "Own Images";
+}
+
+<h2>Own Images</h2>
+@if (Model.Count > 0)
+{
+    <table class="table table-hover">
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Votes
+            </th>
+            <th>
+                Contest
+            </th>
+            <th>
+                State
+            </th>
+            <th>
+                EndTime
+            </th>
+        </tr>
+        @Html.DisplayForModel()
+    </table>
+}
+else
+{
+    <h2>No photos uploaded!!!</h2>
+}

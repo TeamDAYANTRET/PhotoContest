@@ -74,11 +74,54 @@ namespace PhotoContest.Web.Controllers
         [Authorize]
         public ActionResult GetAllVotesImagesByUser()
         {
+            List<VotedImagesViewModel> viewVoted=new List<VotedImagesViewModel>();
             var userId = User.Identity.GetUserId();
             var currentUser = this.Data.Users.GetById(userId);
-            var votedImages = currentUser.VotedPictures.AsQueryable();
-            var viewVotedImages= votedImages.Select(VotedImagesViewModel.Create);
-            return View(viewVotedImages);
+            var votedImages = currentUser.VotedPictures.OrderBy(x=> x.Contest.State).ToList();
+            foreach (var image in votedImages)
+            {
+                viewVoted.Add(new VotedImagesViewModel
+                {
+                    ContestName = image.Contest.Title,
+                    ImgPath = image.ImagePath,
+                    EndTime = image.Contest.ParticipationEndTime,
+                    Votes = image.Votes.Count,
+                    State=image.Contest.State.ToString()
+
+                });
+            }
+            return this.View(viewVoted);
+        }
+        [Authorize]
+        public ActionResult AllOwnImages()
+        {
+            var userId = User.Identity.GetUserId();
+            var ownImages =
+                this.Data.Images.All()
+                    .Where(x => x.UserId == userId)
+                    .OrderBy(x => x.Contest.State)
+                    .Select(OwnImageViewModel.Create)
+                    .ToList();
+            return this.View(ownImages);
+        }
+        [Authorize]
+        public ActionResult Profile()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = this.Data.Users.GetById(userId);
+            var viewUser = new ProfileUserViewModel()
+            {
+                UserName = user.UserName,
+                FullName = user.FirstName + " " + user.LastName,
+                AboutMe = user.AboutMe,
+                Joined = user.JoinedAt,
+                ProfilePath = user.ProfilePic,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                OwnedImagesCount = user.Pictures.Count,
+                ReceivedPrizesCount = user.Prizes.Count,
+            };
+            return this.View(viewUser);
         }
     }
 }

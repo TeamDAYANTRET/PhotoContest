@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 using PhotoContest.Models;
 using PhotoContest.Web.Attributes;
 
+
 namespace PhotoContest.Web.Models.ViewModels
 {
-    public class VotedImagesViewModel
+    public class OwnImageViewModel
     {
         public string ImgPath { get; set; }
         public string ContestName { get; set; }
@@ -19,16 +17,17 @@ namespace PhotoContest.Web.Models.ViewModels
         public int Votes { get; set; }
         public string State { get; set; }
 
-        public static Expression<Func<Image, VotedImagesViewModel>> Create
+        public static Expression<Func<Image, OwnImageViewModel>> Create
         {
             get
             {
-                return images => new VotedImagesViewModel()
+                return images => new OwnImageViewModel()
                 {
                     ImgPath = images.ImagePath,
                     ContestName = images.Contest.Title,
                     EndTime = images.Contest.ContestEndTime,
-                    Votes = images.Votes.Count
+                    Votes = images.Votes.Count,
+                    State=images.Contest.State.ToString()
                 };
             }
         }

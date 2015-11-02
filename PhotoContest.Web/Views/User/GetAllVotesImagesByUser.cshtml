@@ -1,0 +1,33 @@
+﻿@model List<PhotoContest.Web.Models.ViewModels.VotedImagesViewModel>
+
+@{
+    ViewBag.Title = "Voted Pictures";
+
+}
+@if (Model.Count > 0)
+{
+    <table class="table table-hover">
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Votes
+            </th>
+            <th>
+                Contest
+            </th>
+            <th>
+                State
+            </th>
+            <th>
+                EndTime
+            </th>
+        </tr>
+        @Html.DisplayForModel()
+    </table>
+}
+else
+{
+    <h2>You have not voted!!!</h2>
+}
