@@ -1,0 +1,43 @@
+﻿@using PhotoContest.Web.Models.BindingModels
+
+@model UploadImageBindingModel
+
+@using (@Html.BeginForm("UploadImage", "Images", Model, FormMethod.Post, new { id = "upload-image-form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken();
+    <h4>Fill in image data:</h4>
+    if (TempData["successUpload"] != null)
+    {
+        <p class="text-success">@TempData["successUpload"]</p>
+    }
+    if (TempData["uploadFail"] != null)
+    {
+        <p class="text-warning">@TempData["uploadFail"]</p>
+    }
+    <div class="input-group">
+        @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+        @*<div class="input-group-addon" id="basic-addon">Title</div>*@
+        @Html.LabelFor(m => m.Title)<br />
+        @Html.TextBoxFor(m => m.Title, null, new { @class = "form-control" })
+    </div>
+    <br />
+    <div class="input-group">
+        @Html.ValidationMessageFor(m => m.PhotoFile, null, new { @class = "text-danger" })
+        @*<div class="input-group-addon" id="basic-addon1">Upload photo</div>*@
+        @Html.LabelFor(m => m.PhotoFile)<br />
+        @Html.TextBoxFor(m => m.PhotoFile, null, new { type = "file", @class = "form-control", id = "uploadPhoto", value = "Upload" })
+    </div>
+    <br />
+    <div class="input-group">
+        @*<div class="input-group-addon" id="basic-addon2">Description</div>*@
+        @Html.LabelFor(m => m.Description)<br />
+        @Html.TextAreaFor(m => m.Description, new { @*@class = "form-control",*@ row = "5" })
+    </div>
+        <br />
+        <input type="submit" class="btn btn-primary" value="Upload" />
+        <div>
+            <br />
+            <h5>Preview:</h5>
+            <img src="http://www.rentals-london.co.uk/assets/images/new-developments/awaiting_image.png" id="uploadPhotoPreview" />
+        </div>
+}

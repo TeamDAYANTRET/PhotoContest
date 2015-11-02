@@ -18,7 +18,7 @@ namespace PhotoContest.Models
         [Required]
         public string Description { get; set; }
 
-        public int ForPlace { get; set; }
+        public int? ForPlace { get; set; }
 
         public int ContestId { get; set; }
 

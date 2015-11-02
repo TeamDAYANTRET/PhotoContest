@@ -19,7 +19,7 @@
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.ParticipationEndTime)
-    @Html.EditorFor(m => m.ParticipationEndTime, new { htmlAttributes = new { @class = "form-control", id = "datepicker" } })
+    @Html.TextBoxFor(m => m.ParticipationEndTime, new { @class = "form-control", id = "datepicker" })
     @Html.ValidationMessageFor(m => m.ParticipationEndTime)
 </div>
 <div class="form-group">
@@ -38,10 +38,6 @@
 
 <script type="text/javascript">
     $(function () {
-        var currentDate = $("#datepicker").val();
-        currentDate = currentDate.replace(/\./g, "/");
-        $("#datepicker").datetimepicker({
-            value: currentDate
-        });
+        $("#datepicker").datetimepicker();
     });
 </script>

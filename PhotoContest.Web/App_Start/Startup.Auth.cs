@@ -8,7 +8,6 @@ using Owin;
 using PhotoContest.Web.Models;
 using PhotoContest.Data;
 using PhotoContest.Models;
-using Microsoft.Owin.Security.Facebook;
 
 namespace PhotoContest.Web
 {
@@ -56,19 +55,16 @@ namespace PhotoContest.Web
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
-            var fb = new FacebookAuthenticationOptions()
-            {
-                AppId = "721346014663974",
-                AppSecret = "ec17ec8d4f8048fc230a61125c4e2aab"
-            };
-            //fb.Scope.Add("email");
-            app.UseFacebookAuthentication(fb);
 
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            {
-                ClientId = "872576441375-fp1lekqch5bogrmust1tb6ejj51i8msr.apps.googleusercontent.com",
-                ClientSecret = "R_sfiuNFbzJWSBkMf0RDD7pz"
-            });
+            //app.UseFacebookAuthentication(
+            //   appId: "",
+            //   appSecret: "");
+
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "",
+            //    ClientSecret = ""
+            //});
         }
     }
 }

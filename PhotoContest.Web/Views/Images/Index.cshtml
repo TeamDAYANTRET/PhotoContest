@@ -1,0 +1,33 @@
+﻿@using PhotoContest.Web.Models.BindingModels
+
+@{
+    ViewBag.Title = "Image Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.EditorForModel(new UploadImageBindingModel())
+
+<br/><br/>
+
+@Html.Partial("Images/_DeleteImage")
+
+@section scripts{
+    <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#uploadPhotoPreview').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#uploadPhoto").change(function () {
+                readURL(this);
+            });
+    </script>
+}
+

@@ -4,14 +4,7 @@
     ViewBag.Title = "Commitee";
 }
 
-@Html.Partial("_FlashMessages")
-
 <h2>Commitee in @Model.Title</h2>
-@using (Html.BeginForm("AddCommitee", "Contest", new { id = Model.Id }, FormMethod.Post))
-{
-    <input data-url="/User/getUsers" name="username" type="text" placeholder="Enter username" class="form-control" id="add-member" />
-    <input type="submit" value="Add" class="btn btn-success" />
-}
 
 <table class="table">
     <thead>
@@ -39,6 +32,3 @@
     </tbody>
 </table>
 
-@section scripts {
-    @Scripts.Render("~/bundles/additional")
-}

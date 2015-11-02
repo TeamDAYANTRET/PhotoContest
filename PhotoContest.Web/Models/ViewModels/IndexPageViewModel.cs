@@ -7,7 +7,7 @@ namespace PhotoContest.Web.Models.ViewModels
 {
     public class IndexPageViewModel
     {
-        public IEnumerable<OngoingContestBasicInfoViewModel> OngoingContests { get; set; }
-        public IEnumerable<EndedContestBasicInfoViewModel> EndedContests { get; set; }
+        public IEnumerable<ContestBasicInfoViewModel> OngoingContests { get; set; }
+        public IEnumerable<ContestBasicInfoViewModel> EndedContests { get; set; }
     }
 }

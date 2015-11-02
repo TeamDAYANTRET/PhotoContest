@@ -34,12 +34,14 @@ namespace PhotoContest.Web.Controllers
             var userId = User.Identity.GetUserId();
             var currentContests = await this.Data.Contests.All()
                 .Where(c => c.OwnerId == userId && c.State == TypeOfEnding.Ongoing)
-                .OrderByDescending(c => c.ParticipationEndTime)
-                .Select(OngoingContestBasicInfoViewModel.Create).ToListAsync();
+                .OrderByDescending(c => c.ContestEndTime)
+                .ThenByDescending(c => c.ParticipationEndTime)
+                .Select(ContestBasicInfoViewModel.Create).ToListAsync();
             var pastContests = await this.Data.Contests.All()
                 .Where(c => c.OwnerId == userId && c.State != TypeOfEnding.Ongoing)
                 .OrderByDescending(c => c.ContestEndTime)
-                .Select(EndedContestBasicInfoViewModel.Create).ToListAsync();
+                .ThenByDescending(c => c.ParticipationEndTime)
+                .Select(ContestBasicInfoViewModel.Create).ToListAsync();
 
             var contests = new IndexPageViewModel()
             {
@@ -47,7 +49,6 @@ namespace PhotoContest.Web.Controllers
                 OngoingContests = currentContests
             };
 
-            ViewBag.msg = TempData["msg"];
             return View("Contests", contests);
         }
 
@@ -63,65 +64,6 @@ namespace PhotoContest.Web.Controllers
         {
             var user = this.Data.Users.All().FirstOrDefault(u => u.UserName == username);
             return Json(user == null);
-        }
-
-        public JsonResult getUsers(string username)
-        {
-            var users = this.Data.Users.All().Where(t => t.UserName.Contains(username)).Select(t => t.UserName).ToList();
-
-            return Json(users, JsonRequestBehavior.AllowGet);
-        }
-        [Authorize]
-        public ActionResult GetAllVotesImagesByUser()
-        {
-            List<VotedImagesViewModel> viewVoted=new List<VotedImagesViewModel>();
-            var userId = User.Identity.GetUserId();
-            var currentUser = this.Data.Users.GetById(userId);
-            var votedImages = currentUser.VotedPictures.OrderBy(x=> x.Contest.State).ToList();
-            foreach (var image in votedImages)
-            {
-                viewVoted.Add(new VotedImagesViewModel
-                {
-                    ContestName = image.Contest.Title,
-                    ImgPath = image.ImagePath,
-                    EndTime = image.Contest.ParticipationEndTime,
-                    Votes = image.Votes.Count,
-                    State=image.Contest.State.ToString()
-
-                });
-            }
-            return this.View(viewVoted);
-        }
-        [Authorize]
-        public ActionResult AllOwnImages()
-        {
-            var userId = User.Identity.GetUserId();
-            var ownImages =
-                this.Data.Images.All()
-                    .Where(x => x.UserId == userId)
-                    .OrderBy(x => x.Contest.State)
-                    .Select(OwnImageViewModel.Create)
-                    .ToList();
-            return this.View(ownImages);
-        }
-        [Authorize]
-        public ActionResult Profile()
-        {
-            var userId = User.Identity.GetUserId();
-            var user = this.Data.Users.GetById(userId);
-            var viewUser = new ProfileUserViewModel()
-            {
-                UserName = user.UserName,
-                FullName = user.FirstName + " " + user.LastName,
-                AboutMe = user.AboutMe,
-                Joined = user.JoinedAt,
-                ProfilePath = user.ProfilePic,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                OwnedImagesCount = user.Pictures.Count,
-                ReceivedPrizesCount = user.Prizes.Count,
-            };
-            return this.View(viewUser);
         }
     }
 }

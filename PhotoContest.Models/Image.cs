@@ -35,6 +35,8 @@ namespace PhotoContest.Models
 
         public DateTime CreatedOn { get; set; }
 
+        public string FileName { get; set; } //Added
+
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
@@ -42,8 +44,6 @@ namespace PhotoContest.Models
         public int ContestId { get; set; }
 
         public virtual Contest Contest { get; set; }
-
-        public int PrizeId { get; set; }
 
         public virtual Prize Prize { get; set; }
 

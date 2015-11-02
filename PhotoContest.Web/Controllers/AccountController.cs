@@ -164,7 +164,7 @@ namespace PhotoContest.Web.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Contest");
+                    return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
@@ -368,9 +368,7 @@ namespace PhotoContest.Web.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                //ClaimsIdentity ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
-                //var username = ext.Claims.First(x => x.Type.Contains("name")).Value;
-                var user = new ApplicationUser { UserName = info.DefaultUserName, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -395,7 +393,7 @@ namespace PhotoContest.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Contest");
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -452,7 +450,7 @@ namespace PhotoContest.Web.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Contest");
+            return RedirectToAction("Index", "Home");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

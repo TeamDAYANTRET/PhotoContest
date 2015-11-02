@@ -1,0 +1,8 @@
+﻿@using System;
+
+@model IEnumerable<string>
+
+@foreach (string tag in Model)
+{
+    <a href="#" class="tag-list-el">#@tag</a>
+}

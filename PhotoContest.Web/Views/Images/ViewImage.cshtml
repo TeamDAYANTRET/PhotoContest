@@ -1,0 +1,75 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@using PhotoContest.Web.Models.BindingModels
+
+@model ImageViewModel
+
+@{
+    ViewBag.Title = "Image Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main">
+    <div class="img-p-view-container">
+        <div class="img-main">
+            <img src='@Model.ImagePath' alt='@Model.Title' class="img-single"/>
+            <div class="main-info-cont">
+                @Html.LabelFor(x => x.Author) @Model.Author  <span class="span-votes"><i class="fa fa-heart"></i> @Model.VotesCount</span><br/>
+                @Html.LabelFor(x => x.PostedOn): @(Model.PostedOn.ToString("dd/MM yyyy", System.Globalization.DateTimeFormatInfo.InvariantInfo))
+
+            </div>
+        </div>
+        <div class="tag-container">
+            @Html.LabelFor(x => x.Tags):<br />
+            @Html.DisplayFor(m=>m.Tags) 
+        </div>
+        @Html.ActionLink("< Back", "Details", "Contest", new { id = Model.ContestId }, new { @class= "btn btn-primary"})
+        <br /><br />
+        @if (User.IsInRole("Admin") || User.Identity.Name == Model.Author)
+        {
+            <div class="edit-image">
+
+                <button type="button" class="view-div" data-toggle="modal" data-target="#viewImage@(Model.Id)">EDIT</button>
+
+                <!-- Modal -->
+                <div id="viewImage@(Model.Id)" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            @Html.EditorForModel(new EditImageBindingModel() { Id = Model.Id })                    
+                        </div>
+
+                    </div>
+                </div>
+
+                @Ajax.ActionLink("DELETE", "Delete", new { userId = Model.Id },
+                           new AjaxOptions
+                           {
+                               HttpMethod = "POST"
+                           }, new { @class = "btn btn-primary post-link" })
+            </div>
+        }
+        <div class="comment-container">
+            @Html.LabelFor(x => x.Comments):
+            @*@Html.Partial("_ImgComments", Model.Comments)*@ 
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        @*$(function () {
+            $.ajax({
+                url: '@Url.Action("ReturnComments", "Comments")',
+                data: { imgId: String('@Model.Id') },
+                type: 'POST',
+                success: function (data) {
+                    $("comment-container").html(data);
+                }
+            });
+        })*@
+    </script>
+}
+
+@section styles{
+    @Styles.Render("~/Content/ViewImage/css")
+}
