@@ -39,6 +39,7 @@ namespace PhotoContest.Data.Migrations
             if (!context.Categories.Any())
                 this.SeedCategories(context);
 
+
             if (!context.Contests.Any())
                 this.SeedContests(context);
 
@@ -57,24 +58,7 @@ namespace PhotoContest.Data.Migrations
 
         private void SeedUsers(PhotoContestDbContext context)
         {
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-
-            if (!context.Roles.Any(r => r.Name == "Admin"))
-            {
-                var store = new RoleStore<IdentityRole>(context);
-                var roleManager = new RoleManager<IdentityRole>(store);
-                var role = new IdentityRole { Name = "Admin" };
-
-                roleManager.Create(role);
-            }
-
-            if (!context.Users.Any(u => u.UserName == "admin@admin.com"))
-            {
-                var user = new ApplicationUser { UserName = "admin@admin.com", Email = "admin@admin.com", FirstName = "Admin", LastName = "Adminov" };
-
-                manager.Create(user, "Temp_123");
-                manager.AddToRole(user.Id, "Admin");
-            }
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));            
 
             using (var reader = new StreamReader(this.PathBuilder("PhotoContest.Data", @"/Resources/Users.txt")))
             {
@@ -93,7 +77,7 @@ namespace PhotoContest.Data.Migrations
                         LastName = userData[1],
                         JoinedAt = DateTime.Now,
                         AboutMe = userData[2],
-                        ProfilePic = userData[3] == "https://www.dropbox.com/s/225jip7nvs2gwt6/images%20%283%29.jpg?raw=1" ? null : userData[3]
+                        ProfilePic = userData[3] == "ProfilePicture" ? null : userData[3]
                     };
                     
                     manager.Create(user, "Temp_123" + i++);
@@ -371,8 +355,7 @@ namespace PhotoContest.Data.Migrations
                         {
                             Picture = newImg,
                             Author = user,
-                            Content = "Comment " + j,
-                            CreatedAt = DateTime.Now
+                            Content = "Comment " + j
                         };
 
                         context.Comments.Add(comment);

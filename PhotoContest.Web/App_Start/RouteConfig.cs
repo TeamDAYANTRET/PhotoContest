@@ -16,15 +16,13 @@ namespace PhotoContest.Web
             routes.MapRoute(
                 name: "RemoveMember",
                 url: "{controller}/{id}/{action}/{userId}",
-                defaults: new { controller = "Contest", action = "Index"},
-                namespaces: new string[] { "PhotoContest.Web.Controllers" }
+                defaults: new { controller = "Contest", action = "Index"}
             );
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Contest", action = "Index", id = UrlParameter.Optional },
-                namespaces: new string[] { "PhotoContest.Web.Controllers" }
+                defaults: new { controller = "Contest", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

@@ -5,6 +5,8 @@
     ViewBag.Title = "User Contests";
 }
 
+@Html.Partial("_FlashMessages")
+
 <h1>User's Contests</h1>
 @Html.ActionLink("Add", "add", "contest", routeValues: null, htmlAttributes: new { @class = "btn btn-success" })
 @Html.Partial("_PastAndCurrentContests", Model)

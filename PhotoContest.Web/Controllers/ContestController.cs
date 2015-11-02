@@ -29,8 +29,12 @@ namespace PhotoContest.Web.Controllers
         // GET: Contest
         public async Task<ActionResult> Index()
         {
-            var ongoingContests = await this.getContestsBasicInfo(c => c.State == TypeOfEnding.Ongoing).ToListAsync();
-            var endedContests = await this.getContestsBasicInfo(c => c.State != TypeOfEnding.Ongoing).ToListAsync();
+            var ongoingContests = await this.Data.Contests.All().Where(c=>c.State==TypeOfEnding.Ongoing)
+                .OrderByDescending(c => c.ParticipationEndTime)
+                .Select(OngoingContestBasicInfoViewModel.Create).ToListAsync();
+            var endedContests = await this.Data.Contests.All().Where(c => c.State != TypeOfEnding.Ongoing)
+                .OrderByDescending(c => c.ContestEndTime)
+                .Select(EndedContestBasicInfoViewModel.Create).ToListAsync();
 
             var allContests = new IndexPageViewModel()
             {
@@ -44,7 +48,6 @@ namespace PhotoContest.Web.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var userId = User.Identity.GetUserId();
-            var isInRole = User.IsInRole("Admin");
             var contest = await this.Data.Contests.All().Where(c => c.Id == id).Select(c => new ContestDetailsViewModel()
             {
                 Id = c.Id,
@@ -59,12 +62,11 @@ namespace PhotoContest.Web.Controllers
                 OwnerId = c.OwnerId,
                 CanParticipate = c.Participants.Any(u => u.Id == userId) || c.ParticipationStrategy == Strategy.Open,
                 CanVote = c.CommitteeMembers.Any(u => u.Id == userId) || c.VotingStrategy == Strategy.Open,
-                Picuters = c.Pictures.Select(p => new PagedImageViewModel()
+                Picuters = c.Pictures.Select(p => new ImageViewModel()
                 {
                     Id = p.Id,
-                    ImagePath = p.ImagePath,
-                    VotesCount = p.Votes.Count(),
-                    AuthorUsername = p.User.UserName
+                    Path = p.ImagePath,
+                    VotesCount = p.Votes.Count()
                 })
             }).FirstOrDefaultAsync();
            
@@ -91,13 +93,14 @@ namespace PhotoContest.Web.Controllers
                 return RedirectToAction("contests", "User");
             }
 
+            ViewBag.msg = TempData["msg"];
             return View("commitee", contestComittee);
         }
 
         [Authorize]
         public ActionResult RemoveParticipant(int id, string userId)
         {
-            var contest = this.Data.Contests.All().Where(c => c.Id == id).FirstOrDefault();
+            var contest = this.Data.Contests.All().Where(c => c.Id == id && c.State == TypeOfEnding.Ongoing).FirstOrDefault();
             if (contest == null)
             {
                 return RedirectToRoute("Index");
@@ -119,7 +122,7 @@ namespace PhotoContest.Web.Controllers
         [Authorize]
         public ActionResult RemoveCommiteeMember(int id, string userId)
         {
-            var contest = this.Data.Contests.All().Where(c => c.Id == id).FirstOrDefault();
+            var contest = this.Data.Contests.All().Where(c => c.Id == id && c.State == TypeOfEnding.Ongoing).FirstOrDefault();
             if (contest == null)
             {
                 return RedirectToRoute("Index");
@@ -158,6 +161,7 @@ namespace PhotoContest.Web.Controllers
                 return RedirectToAction("contests", "User");
             }
 
+            ViewBag.msg = TempData["msg"];
             return View("participants", contestComittee);
         }
 
@@ -168,6 +172,7 @@ namespace PhotoContest.Web.Controllers
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Post(ContestModel contest)
         {
             if (!ModelState.IsValid)
@@ -208,15 +213,21 @@ namespace PhotoContest.Web.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var userId = User.Identity.GetUserId();
-            var contest = await this.Data.Contests.All().Where(c => c.Id == id && c.OwnerId == userId).Select(ContestModel.Create).FirstOrDefaultAsync();
+            var contest = await this.Data.Contests.All().Where(c => c.Id == id && c.OwnerId == userId && c.State == TypeOfEnding.Ongoing).Select(ContestModel.Create).FirstOrDefaultAsync();
+            if (contest == null)
+            {
+                return RedirectToAction("GetUserContests", "User");
+            }
+
             return View(contest);
         }
 
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Put(int id, ContestModel contest)
         {
             var userId = User.Identity.GetUserId();
-            var contestDb = await this.Data.Contests.All().Where(c => c.Id == id && c.OwnerId == userId).FirstOrDefaultAsync();
+            var contestDb = await this.Data.Contests.All().Where(c => c.Id == id && c.OwnerId == userId && c.State == TypeOfEnding.Ongoing).FirstOrDefaultAsync();
             if (contestDb == null)
             {
                 ModelState.AddModelError("", "This contest does not exist");
@@ -234,20 +245,22 @@ namespace PhotoContest.Web.Controllers
             contestDb.VotingStrategy = contest.VotingStrategy;
 
             await this.Data.SaveChangesAsync();
-            return RedirectToAction("index", "Contests");
+            TempData["msg"] = "The contest was edited";
+            return RedirectToAction("GetUserContests", "User");
         }
 
         [Authorize]
         public async Task<ActionResult> Dismiss(int id)
         {
             var userId = User.Identity.GetUserId();
-            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == userId);
+            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == userId && c.State == TypeOfEnding.Ongoing);
             if (contest == null)
             {
-                // error message n redirect
+                return RedirectToAction("GetUserContests", "User");
             }
 
             contest.State = TypeOfEnding.Dissmissed;
+            contest.ContestEndTime = DateTime.Now;
             await this.Data.SaveChangesAsync();
             return RedirectToAction("index", "Contest");
         }
@@ -256,41 +269,63 @@ namespace PhotoContest.Web.Controllers
         public async Task<ActionResult> Finalize(int id)
         {
             var userId = User.Identity.GetUserId();
-            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == userId);
+            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == userId && c.State == TypeOfEnding.Ongoing);
             if (contest == null)
             {
-                // error message n redirect
+                return RedirectToAction("GetUserContests", "User");
             }
 
             contest.State = TypeOfEnding.Finalized;
+            contest.ContestEndTime = DateTime.Now;
             // get rewards
             await this.Data.SaveChangesAsync();
             return RedirectToAction("index", "Contest");
         }
 
         [Authorize]
-        public async Task<ActionResult> AddParticipant(int contestId, string userId)
+        public async Task<ActionResult> AddParticipant(int id, string username)
         {
             var ownerId = User.Identity.GetUserId();
-            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == contestId && c.OwnerId == ownerId);
+            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == ownerId && c.State == TypeOfEnding.Ongoing);
             if (contest == null)
             {
-                // error message n redirect
+                return RedirectToAction("GetUserContests", "User");
             }
 
-            var participant = await this.Data.Users.All().FirstOrDefaultAsync(u=>u.Id==userId);
+            var participant = await this.Data.Users.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (participant == null)
             {
-
+                TempData["error"] = "This user is no longer exist";
+                return RedirectToAction("GetParticipants", "Contest", new { id = id });
             }
+
             contest.Participants.Add(participant);
             await this.Data.SaveChangesAsync();
-            return RedirectToAction("index", "Contest");
+            TempData["msg"] = "User added to participants";
+            return RedirectToAction("GetParticipants", "Contest", new { id = id });
         }
 
-        private IQueryable<ContestBasicInfoViewModel> getContestsBasicInfo(Expression<Func<Contest, bool>> wherePredicate)
+        [Authorize]
+        public async Task<ActionResult> AddCommitee(int id, string username)
         {
-            return this.Data.Contests.All().Where(wherePredicate).OrderByDescending(c => c.ContestEndTime).ThenByDescending(c => c.ParticipationEndTime).Select(ContestBasicInfoViewModel.Create);
+            var ownerId = User.Identity.GetUserId();
+            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == ownerId && c.State == TypeOfEnding.Ongoing);
+            if (contest == null)
+            {
+                return RedirectToAction("GetUserContests", "User");
+            }
+
+            var participant = await this.Data.Users.All().FirstOrDefaultAsync(u => u.UserName == username);
+            if (participant == null)
+            {
+                TempData["error"] = "This user is no longer exist";
+                return RedirectToAction("GetComiteeMembers", "Contest", new { id = id });
+            }
+
+            contest.CommitteeMembers.Add(participant);
+            await this.Data.SaveChangesAsync();
+            TempData["msg"] = "User added to commitee";
+            return RedirectToAction("GetComiteeMembers", "Contest", new { id = id });
         }
     }
 }

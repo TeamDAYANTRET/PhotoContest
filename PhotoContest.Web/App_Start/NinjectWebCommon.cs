@@ -1,3 +1,6 @@
+using PhotoContest.Data;
+using PhotoContest.Data.Contracts;
+
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(PhotoContest.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(PhotoContest.Web.App_Start.NinjectWebCommon), "Stop")]
 
@@ -10,8 +13,6 @@ namespace PhotoContest.Web.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
-    using Data;
-    using Data.Contracts;
 
     public static class NinjectWebCommon 
     {
