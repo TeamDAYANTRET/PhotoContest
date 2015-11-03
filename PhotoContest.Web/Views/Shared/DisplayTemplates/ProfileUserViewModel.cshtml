@@ -1,18 +1,28 @@
 ﻿@using PhotoContest.Web.Models.ViewModels
 @model ProfileUserViewModel
+
 <div class="container">
     <div class="row">
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-12 lead">User profile<hr>
+                        <div class="col-md-12 lead">
+                            User profile<hr>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="profile">
                         <div class="col-md-4 text-center">
-                            <img class="img-circle avatar avatar-original" style="-webkit-user-select: none; width: 200px; height: 200px;
-                                      display: block; margin: auto;" src="@Model.ProfilePath">
+                            @if (@Model.ProfilePath == null)
+                            {
+                                <img class="img-circle avatar avatar-original" style="-webkit-user-select: none; width: 200px; height: 200px;
+                                      display: block; margin: auto;" src="https://softuni.bg/Files/UserFiles/ImageGallery/softuni-code-wizard.png">
+                            }
+                            else
+                            {
+                                <img class="img-circle avatar avatar-original" style="-webkit-user-select: none; width: 200px; height: 200px;
+                                                                                                            display: block; margin: auto;" src=@Model.ProfilePath>
+                            }
                         </div>
                         <div class="col-md-8">
                             <div class="row">
@@ -36,9 +46,10 @@
                                     @if (@Model.PhoneNumber != null)
                                     {
                                         <span class="text-muted">Phone Number: </span>
-                                        @Model.PhoneNumber <br/>
+                                        @Model.PhoneNumber
+                                        <br/>
                                     }
-                                    <span class="text-muted">About me: </span> @Model.AboutMe 
+                                    <span class="text-muted">About me: </span> @Model.AboutMe
                                 </div>
                                 <div class="col-md-6">
                                     <div class="activity-mini">
@@ -51,8 +62,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                                     @Ajax.ActionLink("Edit", "EditProfile", "User", new AjaxOptions
+                                {
+                                    UpdateTargetId = "edit",
+                                    InsertionMode = InsertionMode.Replace,
+                                    HttpMethod = "PUT"
+                                }, new { @class = "btn btn-info" })
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div id="edit">
 </div>

@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using PhotoContest.Web.Models.ViewModels;
 using System.Data.Entity;
 using PhotoContest.Models.Enumerations;
+using PhotoContest.Web.Models.BindingModels;
 
 namespace PhotoContest.Web.Controllers
 {
@@ -111,6 +112,7 @@ namespace PhotoContest.Web.Controllers
             var user = this.Data.Users.GetById(userId);
             var viewUser = new ProfileUserViewModel()
             {
+                Id=user.Id,
                 UserName = user.UserName,
                 FullName = user.FirstName + " " + user.LastName,
                 AboutMe = user.AboutMe,
@@ -122,6 +124,53 @@ namespace PhotoContest.Web.Controllers
                 ReceivedPrizesCount = user.Prizes.Count,
             };
             return this.View(viewUser);
+        }
+
+        public PartialViewResult EditProfile()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = this.Data.Users.GetById(userId);
+            var userBinding = new EditUserProfileBindingModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                AboutMe = user.AboutMe,
+                PhoneNumber = user.PhoneNumber,
+                AvatarPath = user.ProfilePic
+            };
+            return PartialView("_EditProfile", userBinding);
+        }
+
+        public ActionResult SaveEditingUserProfile(EditUserProfileBindingModel userProfile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.RedirectToAction("Profile");
+            }
+            var loginUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.GetById(loginUserId);
+            if (userProfile.FirstName != null)
+            {
+                currentUser.FirstName = userProfile.FirstName;
+            }
+            if (userProfile.LastName != null)
+            {
+                currentUser.LastName = userProfile.LastName;
+            }
+            if (userProfile.AvatarPath != null)
+            {
+                currentUser.AboutMe = userProfile.AboutMe;
+            }
+            if (userProfile.PhoneNumber != null)
+            {
+                currentUser.PhoneNumber = userProfile.PhoneNumber;
+            }
+            if (userProfile.AvatarPath != null)
+            {
+                currentUser.ProfilePic = userProfile.AvatarPath;
+            }
+            this.Data.SaveChanges();
+            return this.RedirectToAction("Profile");
         }
     }
 }

@@ -9,6 +9,7 @@ namespace PhotoContest.Web.Models.ViewModels
 {
     public class OwnImageViewModel
     {
+        public int Id { get; set; }
         public string ImgPath { get; set; }
         public string ContestName { get; set; }
         [DatetimeGreaterThanNow]
@@ -23,6 +24,7 @@ namespace PhotoContest.Web.Models.ViewModels
             {
                 return images => new OwnImageViewModel()
                 {
+                    Id=images.Id,
                     ImgPath = images.ImagePath,
                     ContestName = images.Contest.Title,
                     EndTime = images.Contest.ContestEndTime,

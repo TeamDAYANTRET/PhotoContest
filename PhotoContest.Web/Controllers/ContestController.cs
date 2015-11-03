@@ -91,7 +91,7 @@ namespace PhotoContest.Web.Controllers
 
             if (contestComittee == null)
             {
-                return RedirectToAction("contests", "User");
+                return RedirectToAction("GetUserContests", "User");
             }
 
             ViewBag.msg = TempData["msg"];
@@ -159,7 +159,7 @@ namespace PhotoContest.Web.Controllers
 
             if (contestComittee == null)
             {
-                return RedirectToAction("contests", "User");
+                return RedirectToAction("GetUserContests", "User");
             }
 
             ViewBag.msg = TempData["msg"];
