@@ -1,11 +1,11 @@
 ﻿<h4>Delete pic by id:</h4>
 @using (Ajax.BeginForm("Delete",
-                new AjaxOptions
-                {
-                    HttpMethod = "POST",
-                    UpdateTargetId = "deleteResponse",
-                    InsertionMode = InsertionMode.Replace
-                }))
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "deleteResponse",
+        InsertionMode = InsertionMode.Replace
+    }))
 {
     @Html.AntiForgeryToken()
     <p id="deleteResponse"></p>

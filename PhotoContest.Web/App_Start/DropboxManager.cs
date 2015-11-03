@@ -124,8 +124,8 @@
                     {
                         fileContent = await response.GetContentAsStringAsync();
                     }
-                    catch(Exception)
-                    { }                    
+                    catch (Exception)
+                    { }
                 }
             }
 

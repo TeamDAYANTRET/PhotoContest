@@ -62,14 +62,15 @@ namespace PhotoContest.Web.Controllers
                 OwnerId = c.OwnerId,
                 CanParticipate = c.Participants.Any(u => u.Id == userId) || c.ParticipationStrategy == Strategy.Open,
                 CanVote = c.CommitteeMembers.Any(u => u.Id == userId) || c.VotingStrategy == Strategy.Open,
-                Picuters = c.Pictures.Select(p => new ImageViewModel()
+                Picuters = c.Pictures.Select(p => new PagedImageViewModel()
                 {
                     Id = p.Id,
-                    Path = p.ImagePath,
-                    VotesCount = p.Votes.Count()
+                    ImagePath = p.ImagePath,
+                    VotesCount = p.Votes.Count(),
+                    AuthorUsername = p.User.UserName
                 })
             }).FirstOrDefaultAsync();
-           
+
             return View(contest);
         }
 

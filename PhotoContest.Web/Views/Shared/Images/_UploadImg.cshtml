@@ -31,9 +31,11 @@
     <div class="input-group">
         @*<div class="input-group-addon" id="basic-addon2">Description</div>*@
         @Html.LabelFor(m => m.Description)<br />
-        @Html.TextAreaFor(m => m.Description, new { @*@class = "form-control",*@ row = "5" })
+        @Html.TextAreaFor(m => m.Description, new
+   { @*@class = "form-control",*@ row = "5"
+   })
     </div>
-        <br />
+    <br />
         <input type="submit" class="btn btn-primary" value="Upload" />
         <div>
             <br />

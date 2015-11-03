@@ -11,7 +11,7 @@ namespace PhotoContest.Web.Models.ViewModels
 {
     public class ContestDetailsViewModel : ContestBasicInfoViewModel
     {
-        public IEnumerable<ImageViewModel> Picuters { get; set; }
+        public IEnumerable<PagedImageViewModel> Picuters { get; set; }
         public bool CanParticipate { get; set; }
         public bool CanVote { get; set; }
         public DateTime? EndTime { get; set; }

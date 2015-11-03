@@ -1,40 +1,84 @@
 ﻿@using PhotoContest.Web.Models.ViewModels
+@using PhotoContest.Web.Models.BindingModels
 @model ContestDetailsViewModel
 @{
     ViewBag.Title = "Contest" + Model.Title;
 }
 
-<h2>Contest @Model.Title</h2>
+@section sideBar{
+    @if (Model.CanParticipate && Request.IsAuthenticated)
+    {
+        <aside>
+            <p id="delete-response">
+                @if (TempData["succDelete"] != null)
+                {
+                    @:TempData["succDelete"]
+                }
+            </p>
+            <p>Would you like to participate in ths contest?</p>
+            <button id="shows-upload-form">UploadImage</button>
+            <div id="upload-form-container">
+                @Html.Partial("Images/_UploadImg", new UploadImageBindingModel() { ContestId = Model.Id })
+            </div>
 
-<div class="row">
-    <div class="col-md-3">
-        Participations (All Spots): @Model.ParticipationsCount (@(String.IsNullOrEmpty(Model.MaxParticipationsCount.ToString()) ? "No Limit" : Model.MaxParticipationsCount.ToString()))
-    </div>
-    <div class="col-md-3">
-        Time Left (End Time): @(Model.ParticipationEndTime == default(DateTime) ? "No Limit" : (Model.ParticipationEndTime > DateTime.Now ? (Model.ParticipationEndTime - DateTime.Now).ToString(@"dd\.hh\:mm\:ss") : "0:00:00:00") + " (" + @Model.ParticipationEndTime + ")")
-    </div>
-    <div class="col-md-3">
-        Participation: @Model.ParticipationStrategy
-        @if (Model.CanParticipate && User.Identity.IsAuthenticated)
-        {
-            using (Html.BeginForm("upload", "Image", new { id = Model.Id }, FormMethod.Post, htmlAttributes: null))
+        </aside>
+    }
+}
+
+<div id="img-container">
+    <h2>Contest @Model.Title</h2>
+    <div class="row">
+        <div class="col-md-3">
+            Participations (All Spots): @Model.ParticipationsCount (@(String.IsNullOrEmpty(Model.MaxParticipationsCount.ToString()) ? "No Limit" : Model.MaxParticipationsCount.ToString()))
+        </div>
+        <div class="col-md-3">
+            Time Left (End Time): @(Model.ParticipationEndTime == default(DateTime) ? "No Limit" : (Model.ParticipationEndTime > DateTime.Now ? (Model.ParticipationEndTime - DateTime.Now).ToString(@"dd\.hh\:mm\:ss") : "0:00:00:00") + " (" + @Model.ParticipationEndTime + ")")
+        </div>
+        <div class="col-md-3">
+            Voting: @Model.VotingStrategy
+            @if (Model.CanVote && User.Identity.IsAuthenticated)
             {
-                <input type="file" name="file" />
-                <input class="btn btn-success" type="submit" value="Upload"/>
+                <p>You can vote for one image</p>
             }
-        }
+        </div>
     </div>
-    <div class="col-md-3">
-        Voting: @Model.VotingStrategy
-        @if (Model.CanVote && User.Identity.IsAuthenticated)
-        {
-            <p>You can vote for one image</p>
-        }
+    <div class="row1" id="pic-container">
+        @Html.Partial("_ListPagedImages", Model.Picuters)
     </div>
 </div>
-<div class="row">
-    @Html.DisplayFor(i => i.Picuters)
-</div> 
-@section scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+
+
+
+@section styles{
+    @Styles.Render("~/Content/Images/css")
 }
+
+@section scripts{
+    <script>
+        $("#shows-upload-form").click(function () {
+            $("#upload-form-container").slideToggle();
+        });
+    </script>
+
+    @if (Model.CanParticipate)
+    {
+        <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#uploadPhotoPreview').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#uploadPhoto").change(function () {
+                readURL(this);
+            });
+        </script>
+    }
+}
+

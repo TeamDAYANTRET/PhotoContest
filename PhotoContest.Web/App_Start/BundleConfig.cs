@@ -10,7 +10,8 @@ namespace PhotoContest.Web
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery-ui.js"));
+                        "~/Scripts/jquery-ui.js",
+                        "~/Scripts/jquery.unobtrusive-ajax.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*",
@@ -31,11 +32,22 @@ namespace PhotoContest.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            //bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
+            //          "~/Scripts/jquery.signalR-{version}.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                        "~/Content/jquery.datetimepicker.css",
-                       "~/Content/jquery-ui.css"));
+                       "~/Content/jquery-ui.css",
+                       "~/Content/font-awesome.css"));
+
+            bundles.Add(new StyleBundle("~/Content/Images/css").Include(
+            "~/Content/Images/PagedImage.css").Include(
+            "~/Content/Images/UploadSection.css"));
+
+            bundles.Add(new StyleBundle("~/Content/ViewImage/css").Include(
+                      "~/Content/Images/ViewImage.css"));
         }
     }
 }

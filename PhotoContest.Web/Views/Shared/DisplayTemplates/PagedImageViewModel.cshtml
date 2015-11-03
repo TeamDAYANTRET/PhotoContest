@@ -11,9 +11,9 @@
             <img class="contest-img" src="@Model.ImagePath" id="img-@Model.Id" />
         </a>
         <div id="triangle-down-left"></div>
-        <div class="triangle-down-right">
+        <div class="triangle-down-right" id="triangle-d-r-@(Model.Id)">
         </div>
-        <button type="button" class="view-div" data-toggle="modal" data-target="#viewImage@(Model.Id)">
+        <button type="button" class="view-div" data-toggle="modal" data-target="#viewImage@(Model.Id)" id="btn-size-@(Model.Id)">
             <div class="part-bor top left"></div>
             <div class="part-bor top right"></div>
             <div class="part-bor bottom left" id="odd"></div>
@@ -48,15 +48,15 @@
             {
                 @Ajax.ActionLink("DELETE", "Delete", "Images", new { id = Model.Id }, new AjaxOptions
            {
-               HttpMethod="POST",
-               InsertionMode=InsertionMode.Replace,
+               HttpMethod = "POST",
+               InsertionMode = InsertionMode.Replace,
                UpdateTargetId = "pic-container"
            }, htmlAttributes: new
            {
                @class = "btn-img-admin-author-delete",
                onclick = "return confirm('Are you sure you want to delete this image?');"
            });
-            <button type="button" class="btn-img-admin-author-edit" data-toggle="modal" data-target="#editImage@(Model.Id)">EDIT</button>
+                <button type="button" class="btn-img-admin-author-edit" data-toggle="modal" data-target="#editImage@(Model.Id)">EDIT</button>
 
         <!-- Modal -->
                 <div id="editImage@(Model.Id)" class="modal fade" role="dialog">
@@ -65,7 +65,7 @@
                             <div class="modal-header">
                                 <img src="@Model.ImagePath" alt="@Model.Title" class="edit-pic" />
                             </div>
-                            
+
                             <!-- Modal content-->
                             <div class="modal-content">
                                 @Html.Partial("_EditImage", new EditImageBindingModel() { Id = Model.Id })
@@ -78,6 +78,24 @@
     </div>
 </div>
 
-@section scripts{
+@*@section scripts{
     @Styles.Render("~/Content/Images/css")
-}
+
+
+}*@
+
+<script>
+    $("#btn-size-@(Model.Id)").mouseover(function () {
+        $("#triangle-d-r-@(Model.Id)").css({
+            "display": "inline-block",
+            "border-width": "0 0 120px 120px"
+            
+        });
+    });
+    $("#btn-size-@(Model.Id)").mouseout(function () {
+        $("#triangle-d-r-@(Model.Id)").css({
+            "display": "none",
+            "border-width": "0 0 80px 80px"
+        })
+    });
+</script>

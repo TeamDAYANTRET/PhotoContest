@@ -52,7 +52,7 @@ namespace PhotoContest.Web.Controllers
             }
 
             var fileExtension = Path.GetExtension(model.PhotoFile.FileName);
-            var rawFileName = Path.GetFileNameWithoutExtension(model.PhotoFile.FileName);            
+            var rawFileName = Path.GetFileNameWithoutExtension(model.PhotoFile.FileName);
             var uniquePhotoName = Guid.NewGuid() + "-" + rawFileName + fileExtension;
 
             var folderNameInDropbox = Regex.Replace(contest.Title, "\\s+", "");
@@ -62,7 +62,7 @@ namespace PhotoContest.Web.Controllers
             if (sharedLink == null)
             {
                 TempData["uploadFail"] = "No connection to the cloud environment. \nPlease try again later";
-                return this.RedirectToAction("Details", "Contest", new { id = contest.Id});
+                return this.RedirectToAction("Details", "Contest", new { id = contest.Id });
             }
 
             var rawSharedLink = sharedLink.Substring(0, sharedLink.IndexOf("?")) + "?raw=1";
@@ -80,7 +80,7 @@ namespace PhotoContest.Web.Controllers
 
             this.Data.Images.Add(newImage);
             await this.Data.SaveChangesAsync();
-            
+
             TempData["successUpload"] = "Image was successfully uploaded.";
             return this.RedirectToAction("Details", "Contest", new { id = contest.Id });
         }
@@ -101,7 +101,7 @@ namespace PhotoContest.Web.Controllers
             {
                 return new HttpStatusCodeResult(400, "You don't have the right to delete this picture.");
             }
-            
+
             var folderNameInDropbox = Regex.Replace(imageTarget.Contest.Title, "\\s+", "");
             bool deleted = await DropboxManager.Delete("/" + folderNameInDropbox + "/" + imageTarget.FileName);
 
@@ -178,9 +178,9 @@ namespace PhotoContest.Web.Controllers
             bool deadlineByTime = contest.DeadlineStrategy.Equals(DeadlineStrategy.ByTime) && openAccTime;
             bool deadlineByNumParticipants = contest.DeadlineStrategy.Equals(DeadlineStrategy.ByNumberOfParticipants) &&
                 contest.Participants.Count() < contest.MaxParticipationsCount.Value;
-            
+
             bool rightToParticipateOpen = contest.VotingStrategy.Equals(Strategy.Open);
-            bool rightToParticipateClose = contest.VotingStrategy.Equals(Strategy.Closed) && contest.Participants.Any(p => p.Id == userId);     
+            bool rightToParticipateClose = contest.VotingStrategy.Equals(Strategy.Closed) && contest.Participants.Any(p => p.Id == userId);
 
             return validContest && isOpen && (rightToParticipateClose || rightToParticipateOpen) && (deadlineByTime || deadlineByNumParticipants);
         }

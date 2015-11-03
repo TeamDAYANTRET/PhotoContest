@@ -1,7 +1,7 @@
 ﻿namespace PhotoContest.Web.Attributes
 {
     using System.Web;
-    using System.ComponentModel.DataAnnotations;    
+    using System.ComponentModel.DataAnnotations;
 
     public class ValidImage : ValidationAttribute
     {
@@ -28,14 +28,15 @@
                )
             {
                 return new ValidationResult("Unsupported image format. This site accepts only JPEG, JPG, GIF and PNG formats.");
-            } else if 
-               (
-                   !(
-                       (imgObj.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Jpeg.Guid) ||
-                       (imgObj.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Gif.Guid) ||
-                       (imgObj.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Png.Guid)
-                   )
-               )
+            }
+            else if
+             (
+                 !(
+                     (imgObj.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Jpeg.Guid) ||
+                     (imgObj.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Gif.Guid) ||
+                     (imgObj.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Png.Guid)
+                 )
+             )
                 return new ValidationResult("Selected file is not a valid image.");
 
             if ((long)(image.ContentLength) > this.MaxSizeInBytes)

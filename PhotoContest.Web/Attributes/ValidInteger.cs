@@ -32,6 +32,6 @@ namespace PhotoContest.Web.Attributes
             }
 
             return new ValidationResult(string.Format("The value shhould be >= {0} and <= {1}", this.Min, this.Max));
-        }        
+        }
     }
 }
