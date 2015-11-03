@@ -1,0 +1,91 @@
+﻿
+@using PhotoContest.Web.Models.ViewModels
+@using PhotoContest.Models.Enumerations
+
+@model PagedNotificationViewModel
+
+@{
+    ViewBag.Title = "Notifications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="notifications-wrapper">
+    <div id="new-noti" class="noti-container">
+        @Ajax.ActionLink("Show new Notifications", "ReturnNewNotifications", "Notifications", null,
+              new AjaxOptions
+              {
+                  HttpMethod = "POST"
+              }, new { @class = "btn btn-primary", id = "showNew" })
+       
+        <div id="results-new"></div>
+    </div>
+
+    <div id="past-noti" class="noti-container">
+        @Ajax.ActionLink("Show read Notifications", "ReturnReadNotifications", "Notifications", null,
+              new AjaxOptions
+              {
+                  HttpMethod = "POST"
+              }, new { @class = "btn btn-primary", id = "showRead" })
+       
+        <div id="results-read"></div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@section scripts{
+    <script>
+        $(function () {
+            var notificationsHub = $.connection.notificatoins;
+
+            notificationsHub.client.receiveNotification = function (template) {
+                $("#results-new").prepend(template);
+            }
+        });
+
+        $("#showNew").click();
+
+        $("#showNew").click(
+           function () {
+               var token = $(':input:hidden[name*="RequestVerificationToken"]');
+               var data = {};
+               data[token.attr('name')] = token.val();
+               $.ajax({
+                   url: this.href,
+                   type: 'POST',
+                   data: data,
+                   success: function (result) {
+                       $("#results-new").html(result);
+                   }
+               });
+               return false;
+           });
+
+        $("#showRead").click(
+          function () {
+              var token = $(':input:hidden[name*="RequestVerificationToken"]');
+              var data = {};
+              data[token.attr('name')] = token.val();
+              $.ajax({
+                  url: this.href,
+                  type: 'POST',
+                  data: data,
+                  success: function (result) {
+                      $("#results-read").html(result);
+                  }
+              });
+              return false;
+          });
+
+        function succsses(response)
+        {
+            $("#respond").html(response)
+        }
+
+        function fail(response) {
+            $("#respond").html("Unable to sent notification. " + response)
+        }
+    </script>
+}
+
+

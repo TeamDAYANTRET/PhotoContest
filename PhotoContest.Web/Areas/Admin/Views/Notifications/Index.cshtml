@@ -1,0 +1,86 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@using PhotoContest.Models.Enumerations
+
+@model PagedNotificationViewModel
+
+@{
+    ViewBag.Title = "Notifications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>New notification</h3>
+@using (Ajax.BeginForm("SendNotification", "Notifications", new AjaxOptions()
+{
+    HttpMethod = "POST",
+    UpdateTargetId = "results",
+    InsertionMode = InsertionMode.InsertAfter,
+    OnSuccess = "succsses",
+    OnFailure = "fail"
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Type, new { @class = "control-label" })
+        @Html.DropDownListFor(m => m.Type, EnumHelper.GetSelectList(typeof(NotificationType)), "Select My Type", new { @class = "form-control" })
+        <br />
+
+        @Html.LabelFor(m => m.Content)
+        @Html.TextAreaFor(m => m.Content, new { @class = "form-control" })
+    </div>
+
+    <p id="respond" class="text-info"></p>
+
+    <input type="submit" value="Send" class="btn btn-primary" />
+}
+
+<div class="past-noti">
+    @Ajax.ActionLink("Show past Notifications", "ReturnAllNotifications", "Notifications", null,
+              new AjaxOptions
+              {
+                  HttpMethod = "POST",
+                  UpdateTargetId = "results",
+                  InsertionMode = InsertionMode.Replace
+              }, new { @class = "btn btn-primary", id = "showAll" })
+    @Html.AntiForgeryToken()
+    <div id="results" nam></div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            var notificationsHub = $.connection.notificatoins;
+            
+            notificationsHub.client.receiveNotification = function (template) {
+                $("#results").prepend(template);
+            }
+        });
+
+        $("#showAll").click(            
+           function () {
+               var token = $(':input:hidden[name*="RequestVerificationToken"]');
+               var data = {};
+               data[token.attr('name')] = token.val();
+               $.ajax({
+                   url: this.href,
+                   type: 'POST',
+                   data: data,
+                   success: function (result) {
+                       $("#results").html(result);
+                   }
+               });
+               return false;
+           });
+
+        function succsses(response)
+        {
+            $("#respond").html(response)          
+        }
+
+        function fail(response) {
+            $("#respond").html("Unable to sent notification. " + response)
+        }
+    </script>
+}
+
+

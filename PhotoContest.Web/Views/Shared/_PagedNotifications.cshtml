@@ -1,0 +1,10 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+
+@model List<PagedNotificationViewModel>
+
+@foreach (var noti in Model)
+{
+    @Html.DisplayFor(m => noti)
+}
+
+@Html.AntiForgeryToken()

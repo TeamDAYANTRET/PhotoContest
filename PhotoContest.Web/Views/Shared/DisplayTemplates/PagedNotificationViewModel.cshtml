@@ -1,0 +1,47 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+
+@model PagedNotificationViewModel
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title"><b>@Model.Type.ToString()</b> @Model.SendOn.ToString("hh:mm dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)</h3>
+    </div>
+    <div class="panel-body">
+        @Model.Content
+    </div>
+    <div class="panel-footer">
+        @if (Model.IsRead)
+        {
+            @:<input type="checkbox" name="read" id="checkbox@(Model.Id)" checked disabled>Read<br>
+        }
+        else
+        {
+            @:<input type="checkbox" name="read" id="checkbox@(Model.Id)">Read<br>
+        }        
+    </div>
+</div>
+
+<script>
+    @if (Model.IsRead)
+    {
+         @:checked
+        }
+    $(function () {
+        $("#checkbox@(Model.Id)").change(function () {
+            if ($(this).prop("checked", true)) {
+                var token = $(':input:hidden[name*="RequestVerificationToken"]');
+                var data = {};
+                data[token.attr('name')] = token.val();
+                data["id"] = parseInt('@Model.Id');
+                $.ajax({
+                    url: '@Url.Action("Read")',
+                    type: 'POST',
+                    data: data,
+                    success: function (result) {
+                    }
+                });
+                return false;
+            }
+        });
+    });
+</script>

@@ -1,0 +1,14 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@using PhotoContest.Models.Enumerations;
+
+@model PagedNotificationViewModel
+
+@Html.ValidationSummary(true)
+
+<div class="form-group">
+    @Html.LabelFor(m => m.NotificationType, new { @class = "control-label" })
+    @Html.DropDownListFor(m => m.NotificationType, EnumHelper.GetSelectList(typeof(NotificationType)), "Select My Type", new { @class = "form-control" })
+
+    @Html.LabelFor(m => m.Content)
+    @Html.TextAreaFor(m => m.Content, new { @class = "form-control" })
+</div>

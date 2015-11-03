@@ -1,0 +1,11 @@
+﻿<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title"><b>@Model.Type.ToString()</b> @Model.SendOn.ToString("hh:mm dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)</h3>
+    </div>
+    <div class="panel-body">
+        @Model.Content
+    </div>
+    <div class="panel-footer">
+        <input type="checkbox" name="read" id="checkbox@(Model.Id)">Read<br>
+    </div>
+</div>
