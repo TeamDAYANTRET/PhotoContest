@@ -1,28 +1,9 @@
 ﻿@using PhotoContest.Web.Models.ViewModels
 @using PhotoContest.Web.Models.BindingModels
+@using PagedList.Mvc;
 @model ContestDetailsViewModel
 @{
     ViewBag.Title = "Contest" + Model.Title;
-}
-
-@section sideBar{
-    @if (Model.CanParticipate && Request.IsAuthenticated)
-    {
-        <aside>
-            <p id="delete-response">
-                @if (TempData["succDelete"] != null)
-                {
-                    @:TempData["succDelete"]
-                }
-            </p>
-            <p>Would you like to participate in ths contest?</p>
-            <button id="shows-upload-form">UploadImage</button>
-            <div id="upload-form-container">
-                @Html.Partial("Images/_UploadImg", new UploadImageBindingModel() { ContestId = Model.Id })
-            </div>
-
-        </aside>
-    }
 }
 
 <div id="img-container">
@@ -41,10 +22,38 @@
                 <p>You can vote for one image</p>
             }
         </div>
+        @if (Model.CanParticipate && Request.IsAuthenticated)
+        {
+            <div class="col-md-3">
+                <p id="delete-response">
+                    @if (TempData["succDelete"] != null)
+                    {
+                        @:TempData["succDelete"]
+                }
+                </p>
+                <p>Would you like to participate in ths contest?</p>
+                <button class="btn btn-info" id="shows-upload-form" data-toggle="modal" data-target="#uploadModal">Upload Image</button>
+                <div class="modal fade" id="uploadModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Upload Image</h4>
+                            </div>
+                            <div class="modal-body">
+                                @Html.Partial("Images/_UploadImg", new UploadImageBindingModel() { ContestId = Model.Id })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
     <div class="row1" id="pic-container">
         @Html.Partial("_ListPagedImages", Model.Picuters)
+        
     </div>
+    @Html.PagedListPager((IPagedList)Model.Picuters, page => Url.Action("details", "Contest", new { id = Model.Id, page }))
 </div>
 
 

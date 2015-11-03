@@ -12,6 +12,7 @@ using PhotoContest.Web.Models.ViewModels;
 using System.Linq.Expressions;
 using PhotoContest.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace PhotoContest.Web.Controllers
 {
@@ -45,7 +46,7 @@ namespace PhotoContest.Web.Controllers
             return View("Index", allContests);
         }
 
-        public async Task<ActionResult> Details(int id)
+        public async Task<ActionResult> Details(int id, int page = 1)
         {
             var userId = User.Identity.GetUserId();
             var contest = await this.Data.Contests.All().Where(c => c.Id == id).Select(c => new ContestDetailsViewModel()
@@ -70,7 +71,8 @@ namespace PhotoContest.Web.Controllers
                     AuthorUsername = p.User.UserName
                 })
             }).FirstOrDefaultAsync();
-
+            page = page < 1 ? 1 : page;
+            contest.Picuters = contest.Picuters.ToPagedList(page, 9);
             return View(contest);
         }
 
