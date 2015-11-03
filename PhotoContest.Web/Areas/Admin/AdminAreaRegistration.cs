@@ -18,7 +18,7 @@ namespace PhotoContest.Web.Areas.Admin
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional },
-                new { controller = "Notifications|AdminHome" },
+                new { controller = "Notifications" },
                 new[] { "PhotoContest.Web.Areas.Admin.Controllers" }
             );
         }

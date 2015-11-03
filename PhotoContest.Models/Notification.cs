@@ -12,8 +12,10 @@ namespace PhotoContest.Models
         [Required]
         public string Content { get; set; }
 
+        [Required]
         public DateTime SendOn { get; set; }
 
+        [Required(ErrorMessage = "Notification type is requred.")]
         public NotificationType Type { get; set; }
 
         public bool IsRead { get; set; } 

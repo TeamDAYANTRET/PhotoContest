@@ -28,3 +28,62 @@ textarea {
     height: 200px;
     margin: 0 auto;
 }
+
+.container-custom {
+    display:inline-block;
+    margin:0;
+    margin-top:15px;
+}
+
+.glyphicon-bell{
+    font-size:19px;
+    color:dimgray;
+}
+
+.badge-notify{
+    font-size:10px;
+    position:relative;
+    min-width:5px;
+    padding:2px 4px;
+    top:-10px;    
+    left:-13px;
+    background-color:indianred;
+}
+
+#notification-link{
+    margin-left:-28px;
+    display:inline-block;
+    top:-3px;
+}
+
+.panel-info{
+    max-width:400px;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.noti-container{
+    display:inline-block;
+    text-align:center;
+    width:450%;
+    min-width:300px;
+    margin:10px;
+    margin-top:40px;
+}
+
+#notifications-wrapper{
+    display:block;
+    overflow:hidden;
+    width:100%;
+    clear:both;
+    margin-top:30px;    
+    margin-left:auto;
+    margin-right:auto;
+    display:flex;
+}
+
+#showNew, #showRead{
+    margin-bottom:7px;
+    text-align:center;
+}

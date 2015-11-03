@@ -98,6 +98,22 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Owin, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Owin.1.2.2\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -161,6 +177,10 @@
     </Reference>
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.7.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.7.3\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -263,7 +283,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
-    <Compile Include="Areas\Admin\Controllers\NotificationsAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NotificationsController.cs" />
     <Compile Include="Attributes\DatetimeGreaterThanNowAttribute.cs" />
     <Compile Include="Attributes\ValidImage.cs" />
     <Compile Include="Attributes\ValidInteger.cs" />
@@ -273,6 +293,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NotificationasController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VoteController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -280,9 +301,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\BindingModels\EditImageBindingModel.cs" />
     <Compile Include="Models\BindingModels\EditUserProfileBindingModel.cs" />
+    <Compile Include="Models\BindingModels\EditImageBindingModel.cs" />
+    <Compile Include="Models\BindingModels\NotificationBindingModel.cs" />
     <Compile Include="Models\BindingModels\UploadImageBindingModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\CommentViewModel.cs" />
@@ -297,6 +320,7 @@
     <Compile Include="Models\ViewModels\OngoingContestBasicInfoViewModel.cs" />
     <Compile Include="Models\ViewModels\OwnImageViewModel.cs" />
     <Compile Include="Models\ViewModels\PagedImageViewModel.cs" />
+    <Compile Include="Models\ViewModels\PagedNotificationViewModel.cs" />
     <Compile Include="Models\ViewModels\ProfileUserViewModel.cs" />
     <Compile Include="Models\ViewModels\UserBasicViewModel.cs" />
     <Compile Include="Models\ViewModels\VotedImagesViewModel.cs" />
@@ -337,7 +361,14 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Content\font-awesome.css.map" />
     <Content Include="Areas\Admin\Views\web.config" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Notifications\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\PagedNotificationViewModel.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\PagedNotificationViewModel.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_PagedNotifications.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_PagedNotification.cshtml" />
+    <Content Include="Views\RazorEngine\_PagedNotificationViewModel.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -346,6 +377,8 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -422,16 +455,17 @@
     <Content Include="Views\Shared\_EditImage.cshtml" />
     <Content Include="Views\Shared\_ListPagedImages.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ImageViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PagedNotificationViewModel.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Shared\_PagedNotifications.cshtml" />
+    <Content Include="Views\Shared\_PagedNotification.cshtml" />
     <Content Include="Views\Shared\_EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\BaseAdmin\" />
-    <Folder Include="Areas\Admin\Views\NotificationsAdmin\" />
-    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Vote\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

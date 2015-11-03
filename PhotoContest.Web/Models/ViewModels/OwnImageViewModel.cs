@@ -24,7 +24,7 @@ namespace PhotoContest.Web.Models.ViewModels
             {
                 return images => new OwnImageViewModel()
                 {
-                    Id=images.Id,
+                    Id = images.Id,
                     ImgPath = images.ImagePath,
                     ContestName = images.Contest.Title,
                     EndTime = images.Contest.ContestEndTime,

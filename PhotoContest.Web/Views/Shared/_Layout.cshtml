@@ -28,13 +28,19 @@
                 {
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Profile", "Profile", "User")</li>
-
                         <li>@Html.ActionLink("User's Contests", "GetUserContests", "User")</li>
                         <li>@Html.ActionLink("Voted Photos", "GetAllVotesImagesByUser", "User")</li>
                         <li>@Html.ActionLink("Own Images", "AllOwnImages", "User")</li>
+                        <li>
+                            <div class="container-custom">
+                                <span class="glyphicon glyphicon-bell"></span>
+                                <span class="badge badge-notify" id="notification-counter">0</span>
+                            </div>
+                            @Html.RouteLink("Notifications", "NotificationsRoute", null, new { @id = "notification-link" })
+                        </li>
                     </ul>
                 }
-                
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
@@ -46,6 +52,41 @@
             <p>&copy; The Best Photo Contest Site</p>
         </footer>
     </div>
+    @Scripts.Render("~/bundles/signalR")
+    <script src="/signalr/hubs"></script>
+
+    @Html.AntiForgeryToken()
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(function () {
+                var token = $(':input:hidden[name*="RequestVerificationToken"]');
+                var data = {};
+                data[token.attr('name')] = token.val();
+                $.ajax({
+                    url: '@Url.Action("CountNotifications", "Notifications")',
+                    type: 'POST',
+                    data: data,
+                    success: function (result) {
+                        $("#notification-counter").html(result);
+                    }
+                });
+                return false;
+            });
+
+            $(function () {
+                var notificationsHub = $.connection.notificatoins;
+                notificationsHub.client.receiveNotificationCount = function () {
+                    var numNotific = $("#notification-counter").html();
+                    $("#notification-counter").html(parseInt(numNotific) + 1);
+                };
+                $.connection.hub.start({ transport: 'longPolling' });
+            });
+
+        </script>
+    }
+
     @RenderSection("sideBar", required: false)
     @RenderSection("scripts", required: false)
     @RenderSection("styles", required: false)

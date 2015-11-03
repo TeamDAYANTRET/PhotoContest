@@ -12,13 +12,13 @@ namespace PhotoContest.Web.Models.ViewModels
     {
         public string Id { get; set; }
         public string UserName { get; set; } 
-        public string FullName { get; set; } 
+        public string FullName { get; set; }
         public string AboutMe { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
-        public DateTime? Joined { get; set; } 
+        public DateTime? Joined { get; set; }
         public string ProfilePath { get; set; }
         public string Email { get; set; } 
-        public string PhoneNumber { get; set; } 
+        public string PhoneNumber { get; set; }
         public int OwnedImagesCount { get; set; }
         public int ReceivedPrizesCount { get; set; }
 
@@ -28,7 +28,7 @@ namespace PhotoContest.Web.Models.ViewModels
             {
                 return profile => new ProfileUserViewModel()
                 {
-                    Id=profile.Id,
+                    Id = profile.Id,
                     UserName = profile.UserName,
                     FullName = profile.FirstName + " " + profile.LastName,
                     AboutMe = profile.AboutMe,

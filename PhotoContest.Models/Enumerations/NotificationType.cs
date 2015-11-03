@@ -2,6 +2,7 @@
 {
     public enum NotificationType
     {
+        CustomAdminNotification,
         ContestDissmissed,
         ContestFinalized,
         CommitteeParticipation,

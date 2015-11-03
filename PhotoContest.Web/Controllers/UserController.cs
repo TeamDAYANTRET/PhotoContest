@@ -126,7 +126,7 @@ namespace PhotoContest.Web.Controllers
             return this.View(viewUser);
         }
 
-        public PartialViewResult EditProfile()
+       public PartialViewResult EditProfile()
         {
             var userId = User.Identity.GetUserId();
             var user = this.Data.Users.GetById(userId);

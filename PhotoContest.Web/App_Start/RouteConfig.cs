@@ -21,6 +21,13 @@ namespace PhotoContest.Web
             );
 
             routes.MapRoute(
+             name: "NotificationsRoute",
+             url: "I/Notifications",
+             defaults: new { controller = "Notifications", action = "Index" },
+             namespaces: new string[] { "PhotoContest.Web.Controllers" }
+          );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Contest", action = "Index", id = UrlParameter.Optional },

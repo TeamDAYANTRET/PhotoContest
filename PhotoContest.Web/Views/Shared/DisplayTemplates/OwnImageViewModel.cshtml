@@ -1,10 +1,25 @@
-﻿@using PhotoContest.Web.Models.BindingModels
+﻿Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+@nadiahristova
+ Watch 1
+  Star 0
+ Fork 0 TeamDAYANTRET/PhotoContest
+ Tree: 45d009e517  PhotoContest/PhotoContest.Web/Views/Shared/DisplayTemplates/OwnImageViewModel.cshtml
+45d009e  6 hours ago
+@jechev jechev Done EditProfile
+1 contributor
+RawBlameHistory     49 lines (44 sloc)  1.55 KB
+@using PhotoContest.Web.Models.BindingModels
 @using PhotoContest.Web.Models.ViewModels
 @model OwnImageViewModel
 
 <tr>
     <td>
-        <img class="img-thumbnail" style="width: 150px; height: 150px" src="@Model.ImgPath"/>
+        <img class="img-thumbnail" style="width: 150px; height: 150px" src="@Model.ImgPath" />
         <button type="button" class="btn-img-admin-author-edit" data-toggle="modal" data-target="#editImage@(Model.Id)">EDIT</button>
 
         <!-- Modal -->
@@ -12,7 +27,7 @@
             <div class="modal-dialog edit-img">
                 <div class="modal-body">
                     <div class="modal-header">
-                        <img src="@Model.ImgPath"  class="edit-pic" />
+                        <img src="@Model.ImgPath" class="edit-pic" />
                     </div>
 
                     <!-- Modal content-->
@@ -46,3 +61,5 @@
     }
 </tr>
 
+Status API Training Shop Blog About Pricing
+© 2015 GitHub, Inc. Terms Privacy Security Contact Help

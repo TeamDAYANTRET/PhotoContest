@@ -41,13 +41,13 @@
                                     @if (@Model.Joined != null)
                                     {
                                         <span class="text-muted">Created: </span>
-                                        @Model.Joined<br/>
+                                        @Model.Joined<br />
                                     }
                                     @if (@Model.PhoneNumber != null)
                                     {
                                         <span class="text-muted">Phone Number: </span>
                                         @Model.PhoneNumber
-                                        <br/>
+                                        <br />
                                     }
                                     <span class="text-muted">About me: </span> @Model.AboutMe
                                 </div>
@@ -65,7 +65,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <hr>
-                                     @Ajax.ActionLink("Edit", "EditProfile", "User", new AjaxOptions
+                            @Ajax.ActionLink("Edit", "EditProfile", "User", new AjaxOptions
                                 {
                                     UpdateTargetId = "edit",
                                     InsertionMode = InsertionMode.Replace,
