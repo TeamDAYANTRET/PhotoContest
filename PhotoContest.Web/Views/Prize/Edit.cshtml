@@ -1,0 +1,48 @@
+﻿@model List<PhotoContest.Web.Models.ViewModels.PrizeEditViewModel>
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@for (int i = 0; i < @Model.Count; i++)
+{
+    <div id="prize-@i" class="prize" style="display: inline-block">
+        @using (@Ajax.BeginForm("Put", "Prize", "Model", new AjaxOptions()
+        {
+            HttpMethod = "PUT",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "prize-" + i,
+            OnComplete = "Create"
+        }))
+        {
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <legend>Prize Name: @Model[i].Name</legend>
+                <div id="@Model[i].Name">
+                    <input name="id" style="visibility: hidden" value="@Model[i].Id" />
+                    <div class="form-group">
+                        @Html.Label("Name")
+                        <input type="text" name="name" class="form-control" value="@Model[i].Name" />
+                        @Html.ValidationMessageFor(m => Model[i].Name)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Description")
+                        <input type="text" name="Description" class="form-control" value="@Model[i].Description" />
+                        @Html.ValidationMessageFor(m => Model[i].Description)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Place")
+                        <input type="text" name="Place" class="form-control" value="@Model[i].Place" />
+                        @Html.ValidationMessageFor(m => Model[i].Description)
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Submit" />
+                </div>
+            </fieldset>
+            <br />
+        }
+    </div>
+}
+
+@Html.ActionLink("Return to Contest option", "Edit", "Contest", new { id = Model[0].ContestId }, new { @class = "btn btn-info" })

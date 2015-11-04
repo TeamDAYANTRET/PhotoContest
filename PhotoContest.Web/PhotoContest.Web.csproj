@@ -314,6 +314,7 @@
     <Compile Include="Models\BindingModels\EditUserProfileBindingModel.cs" />
     <Compile Include="Models\BindingModels\EditImageBindingModel.cs" />
     <Compile Include="Models\BindingModels\NotificationBindingModel.cs" />
+    <Compile Include="Models\BindingModels\PrizeEditBindingModel.cs" />
     <Compile Include="Models\BindingModels\PrizeIndexBindingModel.cs" />
     <Compile Include="Models\BindingModels\UploadImageBindingModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -330,6 +331,7 @@
     <Compile Include="Models\ViewModels\OwnImageViewModel.cs" />
     <Compile Include="Models\ViewModels\PagedImageViewModel.cs" />
     <Compile Include="Models\ViewModels\PagedNotificationViewModel.cs" />
+    <Compile Include="Models\ViewModels\PrizeEditViewModel.cs" />
     <Compile Include="Models\ViewModels\PrizeIndexViewModel.cs" />
     <Compile Include="Models\ViewModels\PrizesForEndedContestViewModel.cs" />
     <Compile Include="Models\ViewModels\PrizesForGoingContestViewModel.cs" />
@@ -482,6 +484,7 @@
     <None Include="Views\Prize\AllPrizeOnGoingContest.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\PrizesForGoingContestViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\PrizesForEndedContestViewModel.cshtml" />
+    <Content Include="Views\Prize\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

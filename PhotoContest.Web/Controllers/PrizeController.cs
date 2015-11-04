@@ -11,6 +11,7 @@ using PhotoContest.Web.Models.ViewModels;
 
 namespace PhotoContest.Web.Controllers
 {
+    [Authorize]
     public class PrizeController : BaseController
     {
 
@@ -77,18 +78,62 @@ namespace PhotoContest.Web.Controllers
             return this.View(prizes);
         }
 
-        public ActionResult ChooseWinners(string id)
-        {
-            int idInt = Int32.Parse(id);
-            var contest = this.Data.Contests.GetById(idInt);
-            var countWinners = contest.PossibleWinnersCount;
-            var topRatedImage =
-                this.Data.Images.All()
-                    .Where(i => i.ContestId == contest.Id)
-                    .OrderByDescending(x => x.Votes)
-                    .Take(countWinners).ToList();
+        //public ActionResult ChooseWinners(string id)
+        //{
+        //    int idInt = Int32.Parse(id);
+        //    var contest = this.Data.Contests.GetById(idInt);
+        //    var countWinners = contest.PossibleWinnersCount;
+        //    var topRatedImage =
+        //        this.Data.Images.All()
+        //            .Where(i => i.ContestId == contest.Id)
+        //            .OrderByDescending(x => x.Votes)
+        //            .Take(countWinners).ToList();
            
             
+        //}
+
+        [HttpPut]
+        public ActionResult Put(PrizeEditBindingModel model)
+        {
+            if (model == null)
+            {
+                ModelState.AddModelError("", "Incorect enered parameter");
+            }
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Incorect enered parameter");
+            }
+
+            Prize prize = this.Data.Prizes.GetById(model.Id);
+            prize.Description = model.Description;
+            prize.Name = model.Name;
+            prize.ForPlace = model.Place;
+
+            this.Data.SaveChanges();
+
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var prizes = this.Data.Prizes
+                .All()
+                .Where(p => p.ContestId == id);
+
+            List<PrizeEditViewModel> models = new List<PrizeEditViewModel>();
+
+            foreach (var prize in prizes)
+            {
+                models.Add(new PrizeEditViewModel()
+                {
+                    Id = prize.Id,
+                    ContestId = prize.ContestId,
+                    Description = prize.Description,
+                    Name = prize.Name,
+                    Place = prize.ForPlace
+                });
+            }
+            return View(models);
         }
     }
 }

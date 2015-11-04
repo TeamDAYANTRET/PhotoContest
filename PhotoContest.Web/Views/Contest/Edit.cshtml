@@ -16,6 +16,7 @@
 }
 @Html.ActionLink("Dismiss", "Dismiss", "Contest", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-danger" })
 @Html.ActionLink("Finalize", "Finalize", "Contest", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-success" })
+@Html.ActionLink("Edit Prizes", "Edit", "Prize", new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-info" })
 
 @using (Html.BeginForm("put", "Contest", new { id = Model.Id }, FormMethod.Post, htmlAttributes: null))
 {
