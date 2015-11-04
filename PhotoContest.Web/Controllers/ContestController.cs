@@ -283,7 +283,7 @@ namespace PhotoContest.Web.Controllers
             contest.ContestEndTime = DateTime.Now;
             // get rewards
             await this.Data.SaveChangesAsync();
-            return RedirectToAction("index", "Contest");
+            return RedirectToAction("ChooseWinners", "Prize",new {id=id});
         }
 
         [Authorize]

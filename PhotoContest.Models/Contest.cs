@@ -28,7 +28,7 @@ namespace PhotoContest.Models
 
         [Required]
         public string Description { get; set; }
-
+        [Range(1,int.MaxValue)]
         public int PossibleWinnersCount { get; set; }
 
         public Strategy VotingStrategy { get; set; }

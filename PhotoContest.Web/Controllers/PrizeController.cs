@@ -56,5 +56,39 @@ namespace PhotoContest.Web.Controllers
             };
             return View(modelView);
         }
+
+        public ActionResult AllPrizeOnGoingContest(int id)
+        {
+            var prizes =
+                this.Data.Prizes.All()
+                    .Where(pz => pz.ContestId == id)
+                    .Select(PrizesForGoingContestViewModel.Create)
+                    .ToList();
+            return this.View(prizes);
+        }
+
+        public ActionResult AllPrizeOnEndedContest(int id)
+        {
+            var prizes =
+                this.Data.Prizes.All()
+                    .Where(pz => pz.ContestId == id)
+                    .Select(PrizesForEndedContestViewModel.Create)
+                    .ToList();
+            return this.View(prizes);
+        }
+
+        public ActionResult ChooseWinners(string id)
+        {
+            int idInt = Int32.Parse(id);
+            var contest = this.Data.Contests.GetById(idInt);
+            var countWinners = contest.PossibleWinnersCount;
+            var topRatedImage =
+                this.Data.Images.All()
+                    .Where(i => i.ContestId == contest.Id)
+                    .OrderByDescending(x => x.Votes)
+                    .Take(countWinners).ToList();
+           
+            
+        }
     }
 }

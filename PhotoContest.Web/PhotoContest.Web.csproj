@@ -300,6 +300,7 @@
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NotificationasController.cs" />
+    <Compile Include="Controllers\PrizeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VoteController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -309,9 +310,11 @@
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BindingModels\CreatePrizeBindingModel.cs" />
     <Compile Include="Models\BindingModels\EditUserProfileBindingModel.cs" />
     <Compile Include="Models\BindingModels\EditImageBindingModel.cs" />
     <Compile Include="Models\BindingModels\NotificationBindingModel.cs" />
+    <Compile Include="Models\BindingModels\PrizeIndexBindingModel.cs" />
     <Compile Include="Models\BindingModels\UploadImageBindingModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\CommentViewModel.cs" />
@@ -327,6 +330,9 @@
     <Compile Include="Models\ViewModels\OwnImageViewModel.cs" />
     <Compile Include="Models\ViewModels\PagedImageViewModel.cs" />
     <Compile Include="Models\ViewModels\PagedNotificationViewModel.cs" />
+    <Compile Include="Models\ViewModels\PrizeIndexViewModel.cs" />
+    <Compile Include="Models\ViewModels\PrizesForEndedContestViewModel.cs" />
+    <Compile Include="Models\ViewModels\PrizesForGoingContestViewModel.cs" />
     <Compile Include="Models\ViewModels\ProfileUserViewModel.cs" />
     <Compile Include="Models\ViewModels\UserBasicViewModel.cs" />
     <Compile Include="Models\ViewModels\VotedImagesViewModel.cs" />
@@ -347,6 +353,7 @@
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="cup.ico" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -463,12 +470,18 @@
     <Content Include="Views\Shared\_ContestsTable.cshtml" />
     <Content Include="Views\Shared\_EditImage.cshtml" />
     <Content Include="Views\Shared\_ListPagedImages.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\ImageViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\PagedNotificationViewModel.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
     <Content Include="Views\Shared\_PagedNotifications.cshtml" />
     <Content Include="Views\Shared\_PagedNotification.cshtml" />
     <Content Include="Views\Shared\_EditProfile.cshtml" />
+    <Content Include="Views\Prize\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PrizeIndexViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PrizeIndexViewModel.cshtml" />
+    <None Include="Views\Prize\AllPrizeOnEndedContest.cshtml" />
+    <None Include="Views\Prize\AllPrizeOnGoingContest.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PrizesForGoingContestViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\PrizesForEndedContestViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

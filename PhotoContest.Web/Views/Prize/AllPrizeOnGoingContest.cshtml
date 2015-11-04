@@ -1,0 +1,22 @@
+﻿@model List<PhotoContest.Web.Models.ViewModels.PrizesForGoingContestViewModel>
+
+@{
+    ViewBag.Title = "Prizes";
+}
+
+<h2>Prizes</h2>
+<table class="table table-hover">
+    <tr>
+        <th>
+            Place
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+    @Html.DisplayForModel()
+</table>
+@Html.ActionLink("Back to Home Page","Index", "Contest",null,new {@class= "btn btn-info" })

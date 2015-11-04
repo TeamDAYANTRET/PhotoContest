@@ -21,7 +21,7 @@
             @Model.VotingStrategy
         </td>
         <td>
-            @Model.Prizes
+            @Html.ActionLink(Model.Prizes.ToString(), "AllPrizeOnEndedContest", "Prize", new { id = Model.Id }, htmlAttributes: null)
         </td>
     </tr>
 </tbody>

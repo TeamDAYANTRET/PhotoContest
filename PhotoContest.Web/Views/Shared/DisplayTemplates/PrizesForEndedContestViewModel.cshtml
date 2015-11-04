@@ -1,0 +1,11 @@
+﻿@using PhotoContest.Web.Models.ViewModels
+@model PrizesForEndedContestViewModel
+<tr>
+    <td>@Model.Place</td>
+    <td>@Model.Name</td>
+    <td>@Model.Description</td>
+    <td><img class="img-thumbnail" style="width: 150px; height: 150px" src="@Model.WinnerImage"/></td>
+    <td>@Model.Votes</td>
+    <td>@Model.WinnerName</td>
+    
+</tr>
