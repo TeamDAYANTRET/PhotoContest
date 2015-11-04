@@ -17,5 +17,7 @@ namespace PhotoContest.Web.Models.ViewModels
         public Strategy VotingStrategy { get; set; }
         public Strategy ParticipationStrategy { get; set; }
         public string OwnerId { get; set; }
+        public int Prizes { get; set; }
+
     }
 }

@@ -24,7 +24,8 @@ namespace PhotoContest.Web.Models.ViewModels
                     VotingStrategy = contest.VotingStrategy,
                     ParticipationEndTime = contest.ParticipationEndTime ?? default(DateTime),
                     ParticipationsCount = contest.Pictures.Select(p => p.User.Id).Distinct().Count(),
-                    OwnerId = contest.OwnerId
+                    OwnerId = contest.OwnerId,
+                    Prizes = contest.Prizes.Count
                 };
             }
         }

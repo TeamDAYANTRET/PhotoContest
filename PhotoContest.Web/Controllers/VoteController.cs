@@ -36,6 +36,9 @@ namespace PhotoContest.Web.Controllers
             var currentUser = this.Data.Users.GetById(loginUser);
             var votedImage = this.Data.Images.GetById(picture.Id)
                 .Votes.FirstOrDefault(v => v.UserName == currentUser.UserName);
+            var votedImageInContest= this.Data.Contests.GetById(picture.ContestId)
+                 .Pictures.FirstOrDefault(c => c.Votes.FirstOrDefault(v => v.UserName == currentUser.UserName) != null);
+
 
             var contest = picture.Contest;
 
@@ -48,7 +51,7 @@ namespace PhotoContest.Web.Controllers
             }
             else
             {
-                if (contest.VotingStrategy == Strategy.Open && contest.State == TypeOfEnding.Ongoing)
+                if (contest.VotingStrategy == Strategy.Open && contest.State == TypeOfEnding.Ongoing && votedImageInContest==null)
                 {
                     currentUser.VotedPictures.Add(picture);
                     this.Data.SaveChanges();
@@ -59,7 +62,7 @@ namespace PhotoContest.Web.Controllers
                 { 
                     var comitteeMembers = contest.CommitteeMembers.FirstOrDefault(x => x.Id == loginUser);
 
-                    if (comitteeMembers != null)
+                    if (comitteeMembers != null && votedImageInContest == null)
                     {
                         currentUser.VotedPictures.Add(picture);
                         this.Data.SaveChanges();

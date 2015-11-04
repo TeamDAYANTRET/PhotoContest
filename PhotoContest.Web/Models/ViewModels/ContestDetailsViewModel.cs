@@ -17,5 +17,6 @@ namespace PhotoContest.Web.Models.ViewModels
         public DateTime? EndTime { get; set; }
         public DateTime ParticipationEndTime { get; set; }
         public TypeOfEnding State { get; set; }
+        public int Prizes { get; set; }
     }
 }

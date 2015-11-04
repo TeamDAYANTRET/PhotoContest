@@ -11,6 +11,7 @@ namespace PhotoContest.Web.Models.ViewModels
     {
         public DateTime? EndTime { get; set; }
 
+
         public static Expression<Func<Contest, EndedContestBasicInfoViewModel>> Create
         {
             get
@@ -24,7 +25,8 @@ namespace PhotoContest.Web.Models.ViewModels
                     Title = contest.Title,
                     VotingStrategy = contest.VotingStrategy,
                     ParticipationsCount = contest.Pictures.Select(p => p.User.Id).Distinct().Count(),
-                    OwnerId = contest.OwnerId
+                    OwnerId = contest.OwnerId,
+                    Prizes = contest.Prizes.Count
                 };
             }
         }

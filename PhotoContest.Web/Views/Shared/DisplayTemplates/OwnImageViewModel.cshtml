@@ -5,7 +5,7 @@
 <tr>
     <td>
         <img class="img-thumbnail" style="width: 150px; height: 150px" src="@Model.ImgPath" />
-        <button type="button" class="btn-img-admin-author-edit" data-toggle="modal" data-target="#editImage@(Model.Id)">EDIT</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editImage@(Model.Id)">EDIT</button>
 
         <!-- Modal -->
         <div id="editImage@(Model.Id)" class="modal fade" role="dialog">
@@ -29,7 +29,7 @@
        UpdateTargetId = "pic-container"
    }, htmlAttributes: new
    {
-       @class = "btn-img-admin-author-delete",
+       @class = "btn btn-danger",
        onclick = "return confirm('Are you sure you want to delete this image?');"
    })
     </td>

@@ -37,6 +37,7 @@ namespace PhotoContest.Web.Models.ViewModels
         public DateTime? ParticipationEndTime { get; set; }
 
         public int? MaxParticipationsCount { get; set; }
+        public int Prizes { get; set; }
 
         public static Expression<Func<Contest, ContestModel>> Create
         {
@@ -53,7 +54,8 @@ namespace PhotoContest.Web.Models.ViewModels
                     PossibleWinnersCount = contest.PossibleWinnersCount,
                     VotingStrategy = contest.VotingStrategy,
                     State = contest.State,
-                    DeadlineStrategy = contest.DeadlineStrategy
+                    DeadlineStrategy = contest.DeadlineStrategy,
+                    Prizes = contest.Prizes.Count
                 };
             }
         }
