@@ -27,13 +27,19 @@ namespace PhotoContest.Web.Controllers
         {
         }
 
-        // GET: Contest
         public ActionResult Index()
         {
-            var ongoingContests = this.Data.Contests.All().Where(c => c.State == TypeOfEnding.Ongoing)
+            var userId = User.Identity.GetUserId();
+            var ongoingContests = this.Data.Contests.All()
+                .Where(c => c.State == TypeOfEnding.Ongoing &&
+                    ((c.ParticipationStrategy == Strategy.Open || c.VotingStrategy == Strategy.Open) ||
+                    (c.Participants.Any(p => p.Id == userId) || c.CommitteeMembers.Any(p => p.Id == userId))))
                 .OrderByDescending(c => c.ParticipationEndTime)
                 .Select(OngoingContestBasicInfoViewModel.Create).ToList();
-            var endedContests = this.Data.Contests.All().Where(c => c.State != TypeOfEnding.Ongoing)
+            var endedContests = this.Data.Contests.All()
+                .Where(c => c.State != TypeOfEnding.Ongoing &&
+                    ((c.ParticipationStrategy == Strategy.Open || c.VotingStrategy == Strategy.Open) ||
+                    (c.Participants.Any(p => p.Id == userId) || c.CommitteeMembers.Any(p => p.Id == userId))))
                 .OrderByDescending(c => c.ContestEndTime)
                 .Select(EndedContestBasicInfoViewModel.Create).ToList();
 
@@ -61,7 +67,9 @@ namespace PhotoContest.Web.Controllers
                 ParticipationEndTime = c.ParticipationEndTime ?? default(DateTime),
                 ParticipationsCount = c.Pictures.Select(p => p.User.Id).Distinct().Count(),
                 OwnerId = c.OwnerId,
-                CanParticipate = c.Participants.Any(u => u.Id == userId) || c.ParticipationStrategy == Strategy.Open,
+                CanParticipate = (c.Participants.Any(u => u.Id == userId) || c.ParticipationStrategy == Strategy.Open)
+                    && ((c.ParticipationEndTime.HasValue && c.ParticipationEndTime > DateTime.Now) 
+                        || (c.MaxParticipationsCount.HasValue && c.MaxParticipationsCount > c.Pictures.Select(p => p.User.Id).Distinct().Count())),
                 CanVote = c.CommitteeMembers.Any(u => u.Id == userId) || c.VotingStrategy == Strategy.Open,
                 Picuters = c.Pictures.Select(p => new PagedImageViewModel()
                 {
