@@ -68,7 +68,8 @@ namespace PhotoContest.Web.Controllers
                     Id = p.Id,
                     ImagePath = p.ImagePath,
                     VotesCount = p.Votes.Count(),
-                    AuthorUsername = p.User.UserName
+                    AuthorUsername = p.User.UserName,
+                    HasVoted = p.Votes.Any(u => u.Id == userId)
                 })
             }).FirstOrDefaultAsync();
             page = page < 1 ? 1 : page;
@@ -209,7 +210,7 @@ namespace PhotoContest.Web.Controllers
             this.Data.Contests.Add(newContest);
             this.Data.SaveChanges();
 
-            return RedirectToAction("Index", "Prize", new { ContestId = newContest.Id, countOfPrizes = newContest.PossibleWinnersCount });
+            return RedirectToAction("GetUserContests", "User", null);
         }
 
         [Authorize]

@@ -7,7 +7,7 @@
 
 <h2>Add</h2>
 
-@using (Html.BeginForm("Post", "Contest", null, FormMethod.Post, htmlAttributes: null))
+@using (Html.BeginForm("post", "Contest", null, FormMethod.Post, htmlAttributes: null))
 {
     @Html.AntiForgeryToken()
     @Html.EditorForModel()

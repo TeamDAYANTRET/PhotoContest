@@ -4,6 +4,7 @@
     using Attributes;
     using PhotoContest.Models;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Linq.Expressions;
 
     public class PagedImageViewModel
@@ -29,6 +30,8 @@
         [StringLength(20, ErrorMessage = "The {0} must be min {2} and max {1} characters long.", MinimumLength = 5)]
         public string AuthorUsername { get; set; }
 
+        public bool HasVoted { get; set; }
+
 
         public static Expression<Func<Image, PagedImageViewModel>> Create
         {
@@ -39,7 +42,8 @@
                     Id = img.Id,
                     ImagePath = img.ImagePath,
                     VotesCount = img.Votes.Count,
-                    AuthorUsername = img.User.UserName
+                    AuthorUsername = img.User.UserName,
+                    HasVoted = img.Votes.Any(u => u.UserName == img.User.UserName)
                 };
             }
         }

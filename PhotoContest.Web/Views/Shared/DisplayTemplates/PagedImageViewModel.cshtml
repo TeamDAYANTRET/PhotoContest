@@ -35,13 +35,33 @@
             </div>
         </div>
 
-        @Ajax.RawActionLink("<span class='fa fa-thumbs-o-up'></span>" + Model.VotesCount, "vote", "Vote", new { id = Model.Id },
-                   new AjaxOptions
-                   {
-                       HttpMethod = "POST",
-                       UpdateTargetId = "vote-btn",
-                       InsertionMode = InsertionMode.Replace
-                   }, new { @class = "vote-btn", id = "vote-btn" })
+        @if (!Request.IsAuthenticated)
+        {
+            <div class="vote-active">
+                <span class='fa fa-heart'></span> @(Model.VotesCount)
+            </div>
+        }
+        else if (!Model.HasVoted)
+        {
+            @Ajax.RawActionLink("<span class='fa fa-thumbs-o-up'></span>" + Model.VotesCount, "ManageVote", "Vote", new { id = Model.Id },
+                             new AjaxOptions
+                             {
+                                 HttpMethod = "POST",
+                                 UpdateTargetId = string.Format("count-{0}", Model.Id),
+                                 InsertionMode = InsertionMode.Replace
+                             }, new { @class = "vote-btn vote-active", id = string.Format("count-{0}", Model.Id) })
+        }
+        else
+        {
+                @Ajax.RawActionLink("<span class='fa fa-thumbs-o-down'></span>" + Model.VotesCount + " <span class='fa fa-heart'></span>", "ManageVote", "Vote",
+                new { id = Model.Id },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "POST",
+                            UpdateTargetId = string.Format("count-{0}", Model.Id),
+                            InsertionMode = InsertionMode.Replace
+                        }, new { @class = "vote-btn vote-active", id = string.Format("count-{0}", Model.Id) })
+        }
 
         <div class="img-admin-author-btncontainer">
             @if (User.IsInRole("Admin") || User.Identity.Name == Model.AuthorUsername)
@@ -54,6 +74,7 @@
            }, htmlAttributes: new
            {
                @class = "btn-img-admin-author-delete",
+               id = "delete-btn-" + Model.Id,
                onclick = "return confirm('Are you sure you want to delete this image?');"
            });
                 <button type="button" class="btn-img-admin-author-edit" data-toggle="modal" data-target="#editImage@(Model.Id)">EDIT</button>
@@ -76,22 +97,18 @@
             }
         </div>
     </div>
+    @Html.AntiForgeryToken()
 </div>
-
-@*@section scripts{
-    @Styles.Render("~/Content/Images/css")
-
-
-}*@
 
 <script>
     $("#btn-size-@(Model.Id)").mouseover(function () {
         $("#triangle-d-r-@(Model.Id)").css({
             "display": "inline-block",
             "border-width": "0 0 120px 120px"
-            
+
         });
     });
+
     $("#btn-size-@(Model.Id)").mouseout(function () {
         $("#triangle-d-r-@(Model.Id)").css({
             "display": "none",

@@ -121,7 +121,8 @@ namespace PhotoContest.Web.Controllers
                     Id = p.Id,
                     ImagePath = p.ImagePath,
                     VotesCount = p.Votes.Count(),
-                    AuthorUsername = p.User.UserName
+                    AuthorUsername = p.User.UserName,
+                    HasVoted = p.Votes.Any(u => u.Id == userId)
                 });
 
             TempData["succDelete"] = "Image was successfully deleted.";

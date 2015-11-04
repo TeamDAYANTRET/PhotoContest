@@ -38,6 +38,8 @@
                     type: 'POST',
                     data: data,
                     success: function (result) {
+                        $("#showNew").click();
+                        $("#results-read").prepend(result);
                     }
                 });
                 return false;

@@ -5,6 +5,11 @@
     using System.Linq;
     using PhotoContest.Data.Contracts;
     using Models.ViewModels;
+    using AutoMapper;
+    using RazorEngine;
+    using PhotoContest.Models;
+    using System.IO;
+    using System;
 
     [Authorize]
     public class NotificationsController : BaseController
@@ -53,11 +58,19 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void Read(int id)
+        public ActionResult Read(int id)
         {
             var notification = this.Data.Notifications.GetById(id);
             notification.IsRead = true;
             this.Data.SaveChangesAsync();
+
+            var template = System.IO.File.ReadAllText(Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    @"Views\RazorEngine\_PagedNotificationViewModel.cshtml"));
+            var renderedPartialView = Razor.Parse(template,
+                Mapper.Map<Notification, PagedNotificationViewModel>(notification));
+
+            return this.Content(renderedPartialView);
         }
 
         [HttpPost]

@@ -52,7 +52,7 @@ namespace PhotoContest.Data.Migrations
                 this.SeedImages(context);
 
             if (!context.Notifications.Any())
-			this.SeedNotifications(context);
+                this.SeedNotifications(context);
         }
 
         private void SeedUsers(PhotoContestDbContext context)
