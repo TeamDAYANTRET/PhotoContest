@@ -209,7 +209,7 @@ namespace PhotoContest.Web.Controllers
             this.Data.Contests.Add(newContest);
             this.Data.SaveChanges();
 
-            return RedirectToAction("GetUserContests", "User", null);
+            return RedirectToAction("Index", "Prize", new { ContestId = newContest.Id, countOfPrizes = newContest.PossibleWinnersCount });
         }
 
         [Authorize]

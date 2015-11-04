@@ -1,0 +1,26 @@
+﻿@model PhotoContest.Web.Models.ViewModels.PrizeIndexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+@for (int i = 0; i < @Model.CountOfPrizes; i++)
+{
+    <div id="prize-@i" class="prize" style="display: inline-block">
+        @using (@Ajax.BeginForm("CreatePrize", "Prize", "Model", new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "prize-" + i,
+            OnComplete = "Create"
+        }))
+        {
+            @Html.DisplayForModel();
+            @Html.EditorForModel()
+            <input type="submit" clas="btn btn-info" value="Submit" />
+        }
+    </div>
+}
+
+<div class="row">
+    <br />
+    @Html.ActionLink("Go to Contests", "GetUserContests", "User", null, new { @class = "btn btn-info" })
+</div>

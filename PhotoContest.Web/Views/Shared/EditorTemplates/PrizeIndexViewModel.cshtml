@@ -1,0 +1,26 @@
+﻿@model PhotoContest.Web.Models.ViewModels.PrizeIndexViewModel
+@{
+    ViewBag.Title = "PrizeIndexViewModel";
+}
+
+@Html.ValidationSummary(true)
+<fieldset>
+    <legend>Prize</legend>
+    <div class="form-group">
+        @Html.Label("Name")
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Description")
+        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description)
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Place")
+        @Html.TextBoxFor(m => m.Place, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description)
+    </div>
+</fieldset>
