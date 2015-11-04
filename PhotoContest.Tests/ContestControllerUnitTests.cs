@@ -21,7 +21,18 @@ namespace PhotoContest.Tests
         [TestMethod]
         public void TestIndexAction_ReturnIndexView()
         {
+            var identity = new GenericIdentity("as");
+            identity.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", "0"));
             var controller = new ContestController(new PhotoContestDataMock());
+            var controllerContext = new TestableControllerContext();
+            var principal = new GenericPrincipal(identity, null);
+            var testableHttpContext = new TestableHttpContext
+            {
+                User = principal
+            };
+
+            controllerContext.HttpContext = testableHttpContext;
+            controller.ControllerContext = controllerContext;
             var result = controller.Index() as ViewResult;
             Assert.AreEqual("Index", result.ViewName);
         }
@@ -36,6 +47,7 @@ namespace PhotoContest.Tests
                 Id = 0,
                 State = TypeOfEnding.Ongoing,
                 Title = "test1",
+                VotingStrategy = Strategy.Open,
                 ParticipationEndTime = DateTime.Now.AddDays(10)
             });
             contest.Add(new Contest()
@@ -43,29 +55,44 @@ namespace PhotoContest.Tests
                 Id = 1,
                 State = TypeOfEnding.Dissmissed,
                 Title = "test2",
+                VotingStrategy = Strategy.Open,
                 ContestEndTime = new DateTime(2010, 10, 10)
             }); contest.Add(new Contest()
             {
                 Id = 2,
                 State = TypeOfEnding.Finalized,
                 Title = "test3",
+                VotingStrategy = Strategy.Open,
                 ContestEndTime = new DateTime(2011, 10, 10)
             }); contest.Add(new Contest()
             {
                 Id = 3,
                 State = TypeOfEnding.Ongoing,
                 Title = "test4",
+                VotingStrategy = Strategy.Open,
                 ParticipationEndTime = DateTime.Now.AddDays(12)
             }); contest.Add(new Contest()
             {
                 Id = 4,
                 State = TypeOfEnding.Ongoing,
                 Title = "test5",
+                VotingStrategy = Strategy.Open,
                 ParticipationEndTime = DateTime.Now.AddDays(13)
             });
             int index = 0;
 
+            var identity = new GenericIdentity("as");
+            identity.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", "0"));
             var controller = new ContestController(data);
+            var controllerContext = new TestableControllerContext();
+            var principal = new GenericPrincipal(identity, null);
+            var testableHttpContext = new TestableHttpContext
+            {
+                User = principal
+            };
+
+            controllerContext.HttpContext = testableHttpContext;
+            controller.ControllerContext = controllerContext;
             var result = controller.Index() as ViewResult;
             var contestResult = (IndexPageViewModel)result.ViewData.Model;
 
@@ -115,8 +142,8 @@ namespace PhotoContest.Tests
             controllerContext.HttpContext = testableHttpContext;
             controller.ControllerContext = controllerContext;
             var result = (RedirectToRouteResult)controller.Post(contest);
-            Assert.AreEqual("GetUserContests", result.RouteValues["action"]);
-            Assert.AreEqual("User", result.RouteValues["controller"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("Prize", result.RouteValues["controller"]);
         }
 
         [TestMethod]
