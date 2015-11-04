@@ -17,9 +17,8 @@ namespace PhotoContest.Web.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional },
-                new { controller = "Notifications" },
-                new[] { "PhotoContest.Web.Areas.Admin.Controllers" }
+                defaults: new { controller = "Notifications", action = "Index", id = UrlParameter.Optional },
+                namespaces: new[] { "PhotoContest.Web.Areas.Admin.Controllers" }
             );
         }
     }

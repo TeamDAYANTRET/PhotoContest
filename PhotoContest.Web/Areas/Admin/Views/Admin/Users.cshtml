@@ -1,0 +1,24 @@
+﻿@using PagedList.Mvc;
+@using PhotoContest.Web.Areas.Admin.Models; 
+@model IEnumerable<UserViewModel>
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Options
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.DisplayForModel()
+    </tbody>
+</table>
+

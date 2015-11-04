@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -27,10 +28,14 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Profile", "Profile", "User")</li>
+                        <li>@Html.ActionLink("Profile", "Profile", "User", new { id = User.Identity.GetUserId() }, null)</li>
                         <li>@Html.ActionLink("User's Contests", "GetUserContests", "User")</li>
                         <li>@Html.ActionLink("Voted Photos", "GetAllVotesImagesByUser", "User")</li>
                         <li>@Html.ActionLink("Own Images", "AllOwnImages", "User")</li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Users", "Users", "Admin", new { area = "Admin" }, null)</li>
+                        }
                         <li>
                             <div class="container-custom">
                                 <span class="glyphicon glyphicon-bell"></span>

@@ -65,7 +65,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <hr>
-                            @Ajax.ActionLink("Edit", "EditProfile", "User", new AjaxOptions
+                            @Ajax.ActionLink("Edit", "EditProfile", "User",new { id = Model.Id}, new AjaxOptions
                                 {
                                     UpdateTargetId = "edit",
                                     InsertionMode = InsertionMode.Replace,

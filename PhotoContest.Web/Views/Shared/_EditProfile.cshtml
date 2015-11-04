@@ -1,6 +1,6 @@
 ﻿@using PhotoContest.Web.Models.BindingModels
 @model EditUserProfileBindingModel
-@using (Html.BeginForm("SaveEditingUserProfile", "User"))
+@using (Html.BeginForm("SaveEditingUserProfile", "User", new { id = Model.Id }))
 {
     @Html.EditorForModel()
     <input type="submit" value="SaveChanges" class="btn btn-info">

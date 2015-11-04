@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>BPCS @ViewBag.Title</title>
+    <link href="/cup.ico" rel="shortcut icon" type="image/x-icon">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -26,16 +28,20 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Profile", "Profile", "User")</li>
-                        <li>@Html.ActionLink("User's Contests", "GetUserContests", "User")</li>
-                        <li>@Html.ActionLink("Voted Photos", "GetAllVotesImagesByUser", "User")</li>
-                        <li>@Html.ActionLink("Own Images", "AllOwnImages", "User")</li>
+                        <li>@Html.ActionLink("Profile", "Profile", "User", new { id = User.Identity.GetUserId(), area = "" }, null)</li>
+                        <li>@Html.ActionLink("User's Contests", "GetUserContests", "User", new { area ="" }, null)</li>
+                        <li>@Html.ActionLink("Voted Photos", "GetAllVotesImagesByUser", "User", new { area = "" }, null)</li>
+                        <li>@Html.ActionLink("Own Images", "AllOwnImages", "User", new { area = "" }, null)</li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Users", "Users", "Admin")</li>
+                        }
                         <li>
                             <div class="container-custom">
                                 <span class="glyphicon glyphicon-bell"></span>
                                 <span class="badge badge-notify" id="notification-counter">0</span>
                             </div>
-                            @Html.RouteLink("Notifications", "NotificationsRoute", null, new { @id = "notification-link" })
+                            @Html.RouteLink("Notifications", "NotificationsRoute", new { area = "" }, new { @id = "notification-link" })
                         </li>
                     </ul>
                 }
@@ -48,17 +54,18 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; The Best Photo Contest Site</p>
         </footer>
     </div>
     @Scripts.Render("~/bundles/signalR")
     <script src="/signalr/hubs"></script>
 
+    @Html.AntiForgeryToken()
+
     @if (User.Identity.IsAuthenticated)
     {
         <script>
             $(function () {
-                debugger;
                 var token = $(':input:hidden[name*="RequestVerificationToken"]');
                 var data = {};
                 data[token.attr('name')] = token.val();
@@ -67,7 +74,7 @@
                     type: 'POST',
                     data: data,
                     success: function (result) {
-                        $("notification-counter").html(result);
+                        $("#notification-counter").html(result);
                     }
                 });
                 return false;
@@ -81,6 +88,7 @@
                 };
                 $.connection.hub.start({ transport: 'longPolling' });
             });
+
         </script>
     }
 

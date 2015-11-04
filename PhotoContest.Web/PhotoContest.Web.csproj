@@ -288,8 +288,10 @@
     <Compile Include="App_Start\ViewEnginesConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\NotificationsController.cs" />
+    <Compile Include="Areas\Admin\Models\UserViewModel.cs" />
     <Compile Include="Attributes\DatetimeGreaterThanNowAttribute.cs" />
     <Compile Include="Attributes\ValidImage.cs" />
     <Compile Include="Attributes\ValidInteger.cs" />
@@ -385,6 +387,8 @@
     <Content Include="Areas\Admin\Views\Shared\_PagedNotifications.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_PagedNotification.cshtml" />
     <Content Include="Views\RazorEngine\_PagedNotificationViewModel.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Users.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\DisplayTemplates\UserViewModel.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -485,10 +489,10 @@
     <Content Include="Views\Shared\DisplayTemplates\PrizesForGoingContestViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\PrizesForEndedContestViewModel.cshtml" />
     <Content Include="Views\Prize\Edit.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EditUserProfileBindingModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\BaseAdmin\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>

@@ -1,0 +1,11 @@
+﻿@using PhotoContest.Web.Areas.Admin.Models
+@model UserViewModel
+
+<tr>
+    <td>
+        @Model.Username
+    </td>
+    <td>
+        @Html.ActionLink("Profile", "Profile", "User", new { id = Model.Id, Area = "" }, new { @class = "btn" })
+    </td>
+</tr>

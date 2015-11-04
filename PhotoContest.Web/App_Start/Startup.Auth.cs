@@ -56,6 +56,7 @@ namespace PhotoContest.Web
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
+
             var fb = new FacebookAuthenticationOptions()
             {
                 AppId = "721346014663974",

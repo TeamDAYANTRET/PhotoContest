@@ -30,16 +30,28 @@ namespace PhotoContest.Web.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
-            var ongoingContests = this.Data.Contests.All()
-                .Where(c => c.State == TypeOfEnding.Ongoing &&
+            Expression<Func<Contest, bool>> wherePredicateCurrentContests;
+            Expression<Func<Contest, bool>> wherePredicatePastContests;
+            if (User.IsInRole("Admin"))
+            {
+                wherePredicateCurrentContests = c => c.State == TypeOfEnding.Ongoing;
+                wherePredicatePastContests = c => c.State != TypeOfEnding.Ongoing;
+            }
+            else
+            {
+                wherePredicateCurrentContests = c => c.State == TypeOfEnding.Ongoing &&
                     ((c.ParticipationStrategy == Strategy.Open || c.VotingStrategy == Strategy.Open) ||
-                    (c.Participants.Any(p => p.Id == userId) || c.CommitteeMembers.Any(p => p.Id == userId))))
+                    (c.Participants.Any(p => p.Id == userId) || c.CommitteeMembers.Any(p => p.Id == userId)));
+                wherePredicatePastContests = c => c.State != TypeOfEnding.Ongoing &&
+                    ((c.ParticipationStrategy == Strategy.Open || c.VotingStrategy == Strategy.Open) ||
+                    (c.Participants.Any(p => p.Id == userId) || c.CommitteeMembers.Any(p => p.Id == userId)));
+            }
+            var ongoingContests = this.Data.Contests.All()
+                .Where(wherePredicateCurrentContests)
                 .OrderByDescending(c => c.ParticipationEndTime)
                 .Select(OngoingContestBasicInfoViewModel.Create).ToList();
             var endedContests = this.Data.Contests.All()
-                .Where(c => c.State != TypeOfEnding.Ongoing &&
-                    ((c.ParticipationStrategy == Strategy.Open || c.VotingStrategy == Strategy.Open) ||
-                    (c.Participants.Any(p => p.Id == userId) || c.CommitteeMembers.Any(p => p.Id == userId))))
+                .Where(wherePredicatePastContests)
                 .OrderByDescending(c => c.ContestEndTime)
                 .Select(EndedContestBasicInfoViewModel.Create).ToList();
 
@@ -89,7 +101,16 @@ namespace PhotoContest.Web.Controllers
         public async Task<ActionResult> GetComiteeMembers(int id)
         {
             var userId = User.Identity.GetUserId();
-            var contestComittee = await this.Data.Contests.All().Where(c => c.Id == id && c.OwnerId == userId).Select(c => new ContestMembersViewModel()
+            Expression<Func<Contest, bool>> wherePredicate;
+            if (User.IsInRole("Admin"))
+            {
+                wherePredicate = c => c.Id == id;
+            }
+            else
+            {
+                wherePredicate = c => c.Id == id && c.OwnerId == userId;
+            }
+            var contestComittee = await this.Data.Contests.All().Where(wherePredicate).Select(c => new ContestMembersViewModel()
             {
                 Id = c.Id,
                 Title = c.Title,
@@ -112,14 +133,18 @@ namespace PhotoContest.Web.Controllers
         [Authorize]
         public ActionResult RemoveParticipant(int id, string userId)
         {
-            var contest = this.Data.Contests.All().Where(c => c.Id == id && c.State == TypeOfEnding.Ongoing).FirstOrDefault();
-            if (contest == null)
+            var loggedInUser = User.Identity.GetUserId();
+            Expression<Func<Contest, bool>> wherePredicate;
+            if (User.IsInRole("Admin"))
             {
-                return RedirectToAction("GetUserContests", "User");
+                wherePredicate = c => c.Id == id && c.State == TypeOfEnding.Ongoing;
             }
-
-            var ownerId = User.Identity.GetUserId();
-            if (ownerId != contest.OwnerId)
+            else
+            {
+                wherePredicate = c => c.Id == id && c.OwnerId == loggedInUser && c.State == TypeOfEnding.Ongoing;
+            }
+            var contest = this.Data.Contests.All().Where(wherePredicate).FirstOrDefault();
+            if (contest == null)
             {
                 return RedirectToAction("GetUserContests", "User");
             }
@@ -134,14 +159,18 @@ namespace PhotoContest.Web.Controllers
         [Authorize]
         public ActionResult RemoveCommiteeMember(int id, string userId)
         {
-            var contest = this.Data.Contests.All().Where(c => c.Id == id && c.State == TypeOfEnding.Ongoing).FirstOrDefault();
-            if (contest == null)
+            var loggedInUser = User.Identity.GetUserId();
+            Expression<Func<Contest, bool>> wherePredicate;
+            if (User.IsInRole("Admin"))
             {
-                return RedirectToAction("GetUserContests", "User");
+                wherePredicate = c => c.Id == id && c.State == TypeOfEnding.Ongoing;
             }
-
-            var ownerId = User.Identity.GetUserId();
-            if (ownerId != contest.OwnerId)
+            else
+            {
+                wherePredicate = c => c.Id == id && c.OwnerId == loggedInUser && c.State == TypeOfEnding.Ongoing;
+            }
+            var contest = this.Data.Contests.All().Where(wherePredicate).FirstOrDefault();
+            if (contest == null)
             {
                 return RedirectToAction("GetUserContests", "User");
             }
@@ -157,7 +186,16 @@ namespace PhotoContest.Web.Controllers
         public async Task<ActionResult> GetParticipants(int id)
         {
             var userId = User.Identity.GetUserId();
-            var contestComittee = await this.Data.Contests.All().Where(c => c.Id == id && c.OwnerId == userId).Select(c => new ContestMembersViewModel()
+            Expression<Func<Contest, bool>> wherePredicate;
+            if (User.IsInRole("Admin"))
+            {
+                wherePredicate = c => c.Id == id;
+            }
+            else
+            {
+                wherePredicate = c => c.Id == id && c.OwnerId == userId;
+            }
+            var contestComittee = await this.Data.Contests.All().Where(wherePredicate).Select(c => new ContestMembersViewModel()
             {
                 Id = c.Id,
                 Title = c.Title,
@@ -225,7 +263,16 @@ namespace PhotoContest.Web.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var userId = User.Identity.GetUserId();
-            var contest = await this.Data.Contests.All().Where(c => c.Id == id && c.OwnerId == userId && c.State == TypeOfEnding.Ongoing).Select(ContestModel.Create).FirstOrDefaultAsync();
+            Expression<Func<Contest, bool>> wherePredicate;
+            if (User.IsInRole("Admin"))
+            {
+                wherePredicate = c => c.Id == id && c.State == TypeOfEnding.Ongoing;
+            }
+            else
+            {
+                wherePredicate = c => c.Id == id && c.OwnerId == userId && c.State == TypeOfEnding.Ongoing;
+            }
+            var contest = await this.Data.Contests.All().Where(wherePredicate).Select(ContestModel.Create).FirstOrDefaultAsync();
             if (contest == null)
             {
                 return RedirectToAction("GetUserContests", "User");
@@ -239,7 +286,16 @@ namespace PhotoContest.Web.Controllers
         public async Task<ActionResult> Put(int id, ContestModel contest)
         {
             var userId = User.Identity.GetUserId();
-            var contestDb = await this.Data.Contests.All().Where(c => c.Id == id && c.OwnerId == userId && c.State == TypeOfEnding.Ongoing).FirstOrDefaultAsync();
+            Expression<Func<Contest, bool>> wherePredicate;
+            if (User.IsInRole("Admin"))
+            {
+                wherePredicate = c => c.Id == id && c.State == TypeOfEnding.Ongoing;
+            }
+            else
+            {
+                wherePredicate = c => c.Id == id && c.OwnerId == userId && c.State == TypeOfEnding.Ongoing;
+            }
+            var contestDb = await this.Data.Contests.All().Where(wherePredicate).FirstOrDefaultAsync();
             if (contestDb == null)
             {
                 ModelState.AddModelError("", "This contest does not exist");
@@ -289,7 +345,6 @@ namespace PhotoContest.Web.Controllers
 
             contest.State = TypeOfEnding.Finalized;
             contest.ContestEndTime = DateTime.Now;
-            // get rewards
             await this.Data.SaveChangesAsync();
             return RedirectToAction("ChooseWinners", "Prize",new {id=id});
         }
@@ -298,7 +353,16 @@ namespace PhotoContest.Web.Controllers
         public ActionResult AddParticipant(int id, string username)
         {
             var ownerId = User.Identity.GetUserId();
-            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == id && c.OwnerId == ownerId && c.State == TypeOfEnding.Ongoing);
+            Expression<Func<Contest, bool>> wherePredicate;
+            if (User.IsInRole("Admin"))
+            {
+                wherePredicate = c => c.Id == id && c.State == TypeOfEnding.Ongoing;
+            }
+            else
+            {
+                wherePredicate = c => c.Id == id && c.OwnerId == ownerId && c.State == TypeOfEnding.Ongoing;
+            }
+            var contest = this.Data.Contests.All().FirstOrDefault(wherePredicate);
             if (contest == null)
             {
                 return RedirectToAction("GetUserContests", "User");
@@ -321,7 +385,16 @@ namespace PhotoContest.Web.Controllers
         public async Task<ActionResult> AddCommitee(int id, string username)
         {
             var ownerId = User.Identity.GetUserId();
-            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(c => c.Id == id && c.OwnerId == ownerId && c.State == TypeOfEnding.Ongoing);
+            Expression<Func<Contest, bool>> wherePredicate;
+            if (User.IsInRole("Admin"))
+            {
+                wherePredicate = c => c.Id == id && c.State == TypeOfEnding.Ongoing;
+            }
+            else
+            {
+                wherePredicate = c => c.Id == id && c.OwnerId == ownerId && c.State == TypeOfEnding.Ongoing;
+            }
+            var contest = await this.Data.Contests.All().FirstOrDefaultAsync(wherePredicate);
             if (contest == null)
             {
                 return RedirectToAction("GetUserContests", "User");

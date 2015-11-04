@@ -24,7 +24,7 @@
            @Html.ActionLink(Model.Prizes.ToString(), "AllPrizeOnGoingContest", "Prize", new { id = Model.Id }, htmlAttributes: null)
         </td>
         <td>
-            @if (Model.OwnerId == User.Identity.GetUserId())
+            @if (Model.OwnerId == User.Identity.GetUserId() || User.IsInRole("Admin"))
             {
                 @Html.ActionLink("Options", "Edit", "Contest", new { id = Model.Id }, htmlAttributes: null)
             }

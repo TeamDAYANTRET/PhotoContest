@@ -204,6 +204,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.ParticipationEndTime = DateTime.Now.AddDays(10);
                             newContest.Participants = allUsers.GetRange(3, 10);
                             newContest.CommitteeMembers = allUsers.GetRange(16, 3);
+                            newContest.PossibleWinnersCount = 3;
                         }
                         break;
                     case 2:
@@ -215,6 +216,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.DeadlineStrategy = DeadlineStrategy.ByNumberOfParticipants;
                             newContest.MaxParticipationsCount = 15;
                             newContest.Participants = allUsers.GetRange(4, 15);
+                            newContest.PossibleWinnersCount = 1;
                         }
                         break;
                     case 3:
@@ -225,6 +227,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.RewardStrategy = RewardStrategy.SingleWinner;
                             newContest.DeadlineStrategy = DeadlineStrategy.ByNumberOfParticipants;
                             newContest.MaxParticipationsCount = 25;
+                            newContest.PossibleWinnersCount = 2;
                         }
                         break;
                     case 4:
@@ -236,6 +239,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.DeadlineStrategy = DeadlineStrategy.ByNumberOfParticipants;
                             newContest.MaxParticipationsCount = 25;
                             newContest.Participants = allUsers.GetRange(0, 4);
+                            newContest.PossibleWinnersCount = 3;
                         }
                         break;
                     case 5:
@@ -247,6 +251,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.DeadlineStrategy = DeadlineStrategy.ByNumberOfParticipants;
                             newContest.MaxParticipationsCount = 25;
                             newContest.Participants = allUsers.GetRange(8, 5);
+                            newContest.PossibleWinnersCount = 3;
                         }
                         break;
                     default:
@@ -258,6 +263,7 @@ namespace PhotoContest.Data.Migrations
                             newContest.DeadlineStrategy = DeadlineStrategy.ByTime;
                             newContest.ParticipationEndTime = DateTime.Now.AddDays(20);
                             newContest.Participants = allUsers.GetRange(allUsers.Count() - 3, 2);
+                            newContest.PossibleWinnersCount = 1;
                         }
                         break;
                 };

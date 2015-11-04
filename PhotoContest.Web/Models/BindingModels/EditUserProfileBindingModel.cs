@@ -8,6 +8,7 @@ namespace PhotoContest.Web.Models.BindingModels
 {
     public class EditUserProfileBindingModel
     {
+        public string Id { get; set; }
         [MinLength(3)]
         public string FirstName { get; set; }
         [MinLength(3)]

@@ -106,10 +106,14 @@ namespace PhotoContest.Web.Controllers
             return this.View(ownImages);
         }
         [Authorize]
-        public ActionResult Profile()
+        public ActionResult Profile(string id)
         {
             var userId = User.Identity.GetUserId();
-            var user = this.Data.Users.GetById(userId);
+            if (!(userId == id || User.IsInRole("Admin")))
+            {
+                return RedirectToAction("EditProfile", "User", new { id = id });
+            }
+            var user = this.Data.Users.GetById(id);
             var viewUser = new ProfileUserViewModel()
             {
                 Id=user.Id,
@@ -126,12 +130,17 @@ namespace PhotoContest.Web.Controllers
             return this.View(viewUser);
         }
 
-       public PartialViewResult EditProfile()
+       public PartialViewResult EditProfile(string id)
         {
             var userId = User.Identity.GetUserId();
-            var user = this.Data.Users.GetById(userId);
+            if (!(userId == id || User.IsInRole("Admin")))
+            {
+                return PartialView("_EditProfile", new EditUserProfileBindingModel());
+            }
+            var user = this.Data.Users.GetById(id);
             var userBinding = new EditUserProfileBindingModel()
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 AboutMe = user.AboutMe,
@@ -141,14 +150,18 @@ namespace PhotoContest.Web.Controllers
             return PartialView("_EditProfile", userBinding);
         }
 
-        public ActionResult SaveEditingUserProfile(EditUserProfileBindingModel userProfile)
+        public ActionResult SaveEditingUserProfile(EditUserProfileBindingModel userProfile, string id)
         {
+            var loginUserId = User.Identity.GetUserId();
+            if (!(loginUserId == id || User.IsInRole("Admin")))
+            {
+                return RedirectToAction("Index", "Contest");
+            }
             if (!ModelState.IsValid)
             {
-                return this.RedirectToAction("Profile");
+                return this.RedirectToAction("Profile", new { id = id });
             }
-            var loginUserId = User.Identity.GetUserId();
-            var currentUser = this.Data.Users.GetById(loginUserId);
+            var currentUser = this.Data.Users.GetById(id);
             if (userProfile.FirstName != null)
             {
                 currentUser.FirstName = userProfile.FirstName;
@@ -170,7 +183,7 @@ namespace PhotoContest.Web.Controllers
                 currentUser.ProfilePic = userProfile.AvatarPath;
             }
             this.Data.SaveChanges();
-            return this.RedirectToAction("Profile");
+            return this.RedirectToAction("Profile", new { id = id });
         }
     }
 }
