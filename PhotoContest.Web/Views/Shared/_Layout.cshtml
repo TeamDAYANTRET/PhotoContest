@@ -41,7 +41,14 @@
                                 <span class="glyphicon glyphicon-bell"></span>
                                 <span class="badge badge-notify" id="notification-counter">0</span>
                             </div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @Html.RouteLink("Notifications", "AdminNotifications", null, new { @id = "notification-link" })
+                        }
+                        else
+                        {
                             @Html.RouteLink("Notifications", "NotificationsRoute", null, new { @id = "notification-link" })
+                        }
                         </li>
                     </ul>
                 }

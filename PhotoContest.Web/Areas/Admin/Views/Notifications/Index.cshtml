@@ -22,7 +22,7 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.Type, new { @class = "control-label" })
-        @Html.DropDownListFor(m => m.Type, EnumHelper.GetSelectList(typeof(NotificationType)), "Select My Type", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.Type, EnumHelper.GetSelectList(typeof(NotificationType)), "Select Notification Type", new { @class = "form-control" })
         <br />
 
         @Html.LabelFor(m => m.Content)
@@ -78,7 +78,7 @@
         }
 
         function fail(response) {
-            $("#respond").html("Unable to sent notification. " + response)
+            $("#respond").html("Unable to sent notification. " + response.statusText)
         }
     </script>
 }

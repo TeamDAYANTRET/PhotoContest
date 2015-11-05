@@ -12,7 +12,7 @@
         <div class="img-main">
             <img src='@Model.ImagePath' alt='@Model.Title' class="img-single"/>
             <div class="main-info-cont">
-                @Html.LabelFor(x => x.Author) @Model.Author  <span class="span-votes"><i class="fa fa-heart"></i> @Model.VotesCount</span><br/>
+                @Html.LabelFor(x => x.Author) @Model.Author  <span class="span-votes"><b><i class="fa fa-heart"></i> @Model.VotesCount </b></span><br/>
                 @Html.LabelFor(x => x.PostedOn): @(Model.PostedOn.ToString("dd/MM yyyy", System.Globalization.DateTimeFormatInfo.InvariantInfo))
 
             </div>

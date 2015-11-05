@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace PhotoContest.Web.Areas.Admin.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class BaseAdminController : Controller
     {
         protected BaseAdminController(IPhotoContestData data)

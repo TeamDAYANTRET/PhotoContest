@@ -47,7 +47,7 @@ namespace PhotoContest.Web.Areas.Admin.Controllers
                                  .Select(e => e.ErrorMessage)
                                  .ToList(); 
 
-                return new HttpStatusCodeResult(400, "Invalid input. " + string.Join("\n", errorList));
+                return new HttpStatusCodeResult(400, string.Join("\n", errorList));
             }
 
             NotificationType type = (NotificationType)model.NotificationType;

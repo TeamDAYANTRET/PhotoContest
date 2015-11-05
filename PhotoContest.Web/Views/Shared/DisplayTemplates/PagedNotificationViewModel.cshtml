@@ -17,15 +17,16 @@
         else
         {
             @:<input type="checkbox" name="read" id="checkbox@(Model.Id)">Read<br>
+            @Html.AntiForgeryToken()
         }        
     </div>
 </div>
 
 <script>
-    @if (Model.IsRead)
+    @*@if (Model.IsRead)
     {
          @:checked
-        }
+        }*@
     $(function () {
         $("#checkbox@(Model.Id)").change(function () {
             if ($(this).prop("checked", true)) {

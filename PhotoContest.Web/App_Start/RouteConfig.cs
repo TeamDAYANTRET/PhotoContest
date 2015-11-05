@@ -32,6 +32,13 @@ namespace PhotoContest.Web
              url: "I/Notifications",
              defaults: new { controller = "Notifications", action = "Index" },
              namespaces: new string[] { "PhotoContest.Web.Controllers" }
+          ); 
+
+             routes.MapRoute(
+             name: "AdminNotifications",
+             url: "Admin/Notifications",
+             defaults: new { controller = "Notifications", action = "Index" },
+             namespaces: new string[] { "PhotoContest.Web.Areas.Admin.Controllers" }
           );
 
             routes.MapRoute(

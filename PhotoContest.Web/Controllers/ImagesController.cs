@@ -37,13 +37,20 @@ namespace PhotoContest.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UploadImage(UploadImageBindingModel model)
         {
+            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.ContestId);
+
             if (!this.ModelState.IsValid || model == null)
             {
-                return this.Content("Wrong input.");//this.View();
+                var errorList = ModelState.Values.SelectMany(m => m.Errors)
+                                 .Select(e => e.ErrorMessage)
+                                 .ToList();
+
+                TempData["uploadFail"] = "Wrong input. " + string.Join("\n", errorList);
+                return this.RedirectToAction("Details", "Contest", new { id = contest.Id });
             }
 
             var userId = User.Identity.GetUserId();
-            var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.ContestId);
+            //var contest = this.Data.Contests.All().FirstOrDefault(c => c.Id == model.ContestId);
 
             if (!this.RightToParticipate(contest, userId))
             {
@@ -86,7 +93,6 @@ namespace PhotoContest.Web.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id)
         {
             var imageTarget = this.Data.Images.GetById(id);

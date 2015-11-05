@@ -29,8 +29,16 @@
                     @if (TempData["succDelete"] != null)
                     {
                         @:TempData["succDelete"]
-                }
+                    }
                 </p>
+                @if (TempData["successUpload"] != null)
+                {
+                    <p class="text-success">@TempData["successUpload"]</p>
+                }
+                @if (TempData["uploadFail"] != null)
+                {
+                    <p class="text-warning">@TempData["uploadFail"]</p>
+                }
                 <p>Would you like to participate in ths contest?</p>
                 <button class="btn btn-info" id="shows-upload-form" data-toggle="modal" data-target="#uploadModal">Upload Image</button>
                 <div class="modal fade" id="uploadModal" role="dialog">

@@ -7,6 +7,7 @@
     float:left;
     margin-bottom:20px;
     text-align:center;
+    padding-bottom:10px;
 }
 
 .vote-active{
@@ -142,7 +143,7 @@
     border:1px solid lightgray;
     border-radius:5px;
     padding:3px;
-    box-shadow: 0 12px 12px -3px #888888;
+    box-shadow: 0 10px 10px -3px #888888;
 }
 
 .row1{

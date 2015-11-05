@@ -345,29 +345,8 @@ namespace PhotoContest.Web.Controllers
 
             contest.State = TypeOfEnding.Finalized;
             contest.ContestEndTime = DateTime.Now;
-
-            var topRatedImage =
-                    this.Data.Images.All()
-                        .Where(i => i.ContestId.Equals(contest.Id))
-                        .OrderByDescending(x => x.Votes.Count)
-                        .Take(contest.PossibleWinnersCount).ToList();
-
-            var prizes = this.Data.Prizes
-                .All()
-                .Where(p => p.ContestId == contest.Id)
-                .OrderBy(p => p.ForPlace).ToList();
-
-            for (int i = 0; i < topRatedImage.Count; i++)
-            {
-                string userWinnerId = topRatedImage[i].UserId;
-                prizes[i].UserId = userWinnerId;
-                prizes[i].PictureId = topRatedImage[i].Id;
-                prizes[i].Picture = topRatedImage[i];
-            }
-
             await this.Data.SaveChangesAsync();
-
-            return RedirectToAction("AllPrizeOnEndedContest", "Prize",new {id=id});
+            return RedirectToAction("ChooseWinners", "Prize",new {id=id});
         }
 
         [Authorize]
