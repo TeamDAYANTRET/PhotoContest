@@ -18,7 +18,8 @@ namespace PhotoContest.Web.Controllers
 {
     public class ContestController : BaseController
     {
-        public ContestController() : this(new PhotoContestData())
+        public ContestController()
+            : this(new PhotoContestData())
         {
         }
 
@@ -80,7 +81,7 @@ namespace PhotoContest.Web.Controllers
                 ParticipationsCount = c.Pictures.Select(p => p.User.Id).Distinct().Count(),
                 OwnerId = c.OwnerId,
                 CanParticipate = (c.Participants.Any(u => u.Id == userId) || c.ParticipationStrategy == Strategy.Open)
-                    && ((c.ParticipationEndTime.HasValue && c.ParticipationEndTime > DateTime.Now) 
+                    && ((c.ParticipationEndTime.HasValue && c.ParticipationEndTime > DateTime.Now)
                         || (c.MaxParticipationsCount.HasValue && c.MaxParticipationsCount > c.Pictures.Select(p => p.User.Id).Distinct().Count())),
                 CanVote = c.CommitteeMembers.Any(u => u.Id == userId) || c.VotingStrategy == Strategy.Open,
                 Picuters = c.Pictures.Select(p => new PagedImageViewModel()
@@ -345,8 +346,29 @@ namespace PhotoContest.Web.Controllers
 
             contest.State = TypeOfEnding.Finalized;
             contest.ContestEndTime = DateTime.Now;
+
+            var topRatedImage =
+                    this.Data.Images.All()
+                        .Where(i => i.ContestId.Equals(contest.Id))
+                        .OrderByDescending(x => x.Votes.Count)
+                        .Take(contest.PossibleWinnersCount).ToList();
+
+            var prizes = this.Data.Prizes
+                .All()
+                .Where(p => p.ContestId == contest.Id)
+                .OrderBy(p => p.ForPlace).ToList();
+
+            for (int i = 0; i < topRatedImage.Count; i++)
+            {
+                string userWinnerId = topRatedImage[i].UserId;
+                prizes[i].UserId = userWinnerId;
+                prizes[i].PictureId = topRatedImage[i].Id;
+                prizes[i].Picture = topRatedImage[i];
+            }
+
             await this.Data.SaveChangesAsync();
-            return RedirectToAction("ChooseWinners", "Prize",new {id=id});
+
+            return RedirectToAction("AllPrizeOnEndedContest", "Prize", new { id = id });
         }
 
         [Authorize]
